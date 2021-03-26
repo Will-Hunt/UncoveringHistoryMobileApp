@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Uncovering History</string>
+    <string name="map_name">Map</string>
+    <string name="route_name">Route</string>
+    <string name="favourites_name">Favourites</string>
+    <string name="profile_name">Profile</string>
 </resources>
