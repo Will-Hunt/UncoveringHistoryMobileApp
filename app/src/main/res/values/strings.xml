@@ -4,4 +4,5 @@
     <string name="route_name">Route</string>
     <string name="favourites_name">Favourites</string>
     <string name="profile_name">Profile</string>
+    <string name="google_maps_key">AIzaSyCYUkVd46jDLq4pk6E6KDeiSYfFgMMlne4</string>
 </resources>
