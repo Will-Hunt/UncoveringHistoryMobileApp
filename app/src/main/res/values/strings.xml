@@ -4,5 +4,15 @@
     <string name="route_name">Route</string>
     <string name="favourites_name">Favourites</string>
     <string name="profile_name">Profile</string>
+
     <string name="google_maps_key">AIzaSyCYUkVd46jDLq4pk6E6KDeiSYfFgMMlne4</string>
+
+    <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
+    <string name="facebook_app_id">949336838939681</string>
+    <string name="fb_login_protocol_scheme">fb949336838939681</string>
+
+    <!-- Twitter consumer key and secret -->
+    <string name="twitter_consumer_key" translatable="false">YOUR_CONSUMER_KEY</string>
+    <string name="twitter_consumer_secret" translatable="false">YOUR_CONSUMER_SECRET</string>
+
 </resources>
