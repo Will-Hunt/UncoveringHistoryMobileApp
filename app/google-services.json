@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "823499817950",
+    "project_id": "uncovering-history-mobile-app",
+    "storage_bucket": "uncovering-history-mobile-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823499817950:android:c348338dc132f14c1f934f",
+        "android_client_info": {
+          "package_name": "com.example.uncoveringhistory"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "823499817950-cq25ea5eqkftbj9aul54o7u6u2ceg8lc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSTlEBXejKxydWRIUph_G7rnPUYDh06mk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "823499817950-cq25ea5eqkftbj9aul54o7u6u2ceg8lc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
