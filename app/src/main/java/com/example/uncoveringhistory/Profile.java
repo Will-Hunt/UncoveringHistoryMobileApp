@@ -41,7 +41,7 @@ public class Profile extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
-        if(firebaseUser != null){
+        if (firebaseUser != null) {
             Glide.with(Profile.this).load(firebaseUser.getPhotoUrl()).into(login_image);
             login_name.setText(firebaseUser.getDisplayName());
         }
@@ -52,10 +52,10 @@ public class Profile extends AppCompatActivity {
                 googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             firebaseAuth.signOut();
                             Toast.makeText(getApplicationContext(), "Successfully Logged Out", Toast.LENGTH_SHORT).show();
-                            finish();
+                            startActivity(new Intent(Profile.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                         }
                     }
                 });

@@ -8,7 +8,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -19,20 +18,19 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-    SignInButton google_login;
     GoogleSignInOptions googleSignInOptions;
     GoogleSignInClient googleSignInClient;
     GoogleSignInAccount googleSignInAccount;
     AuthCredential authCredential;
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +39,11 @@ public class MainActivity extends AppCompatActivity {
 //         Call Map straight away
 //        startActivity(new Intent(this, Map.class));
 
-        //Assigning Variables
-        google_login = findViewById(R.id.google_login);
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser != null) { //If a user is signed in
+            startActivity(new Intent(MainActivity.this, Profile.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        }
 
         // Initializing Sign In Options
         googleSignInOptions = new GoogleSignInOptions.Builder(
@@ -53,19 +54,32 @@ public class MainActivity extends AppCompatActivity {
         // Initializing Sign In Client
         googleSignInClient = GoogleSignIn.getClient(MainActivity.this, googleSignInOptions);
 
-        google_login.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.google_login).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = googleSignInClient.getSignInIntent();
                 startActivityForResult(intent, 100); //Start Activity for Result
             }
         });
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
-        if (firebaseUser != null) { //If a user is signed in
-            startActivity(new Intent(MainActivity.this, Profile.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
 
-        }
+//        facebook_login.registerCallback(CallbackManager.Factory.create(), new FacebookCallback<LoginResult>() {
+//            @Override
+//            public void onSuccess(LoginResult loginResult) {
+//                Log.d("UncoveringHistoryFirebase", "nbvcx");
+//                AccessToken token = loginResult.getAccessToken();
+//                authCredential = FacebookAuthProvider.getCredential(token.getToken());
+//                firebaseAuthentication(authCredential);
+//            }
+//
+//            @Override
+//            public void onCancel() {
+//
+//            }
+//
+//            @Override
+//            public void onError(FacebookException error) {
+//            }
+//        });
     }
 
 
