@@ -26,6 +26,7 @@ public class Profile extends AppCompatActivity {
     ImageView login_image;
     TextView login_name;
     Button logout_btn;
+    Button add_new_site;
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     GoogleSignInClient googleSignInClient;
@@ -35,18 +36,24 @@ public class Profile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        login_image = findViewById(R.id.login_image);
-        login_name = findViewById(R.id.login_name);
-        logout_btn = findViewById(R.id.logout_btn);
-
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null) {
+            login_image = findViewById(R.id.login_image);
+            login_name = findViewById(R.id.login_name);
             Glide.with(Profile.this).load(firebaseUser.getPhotoUrl()).into(login_image);
             login_name.setText(firebaseUser.getDisplayName());
         }
+
+        findViewById(R.id.add_new_site).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Profile.this, Map.class));
+            }
+        });
+
         googleSignInClient = GoogleSignIn.getClient(Profile.this, GoogleSignInOptions.DEFAULT_SIGN_IN);
-        logout_btn.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.logout_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {

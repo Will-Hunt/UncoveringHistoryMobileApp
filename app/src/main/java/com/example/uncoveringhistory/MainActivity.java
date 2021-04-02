@@ -16,6 +16,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 import android.content.Intent;
@@ -36,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//         Call Map straight away
-//        startActivity(new Intent(this, Map.class));
+        // Call Map straight away
+        // startActivity(new Intent(this, Map.class));
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
@@ -63,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void firebaseAuthentication(AuthCredential authCredential){
+    private void firebaseAuthentication(AuthCredential authCredential) {
         firebaseAuth.signInWithCredential(authCredential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
