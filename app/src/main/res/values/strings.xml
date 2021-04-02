@@ -10,9 +10,15 @@
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_app_id">949336838939681</string>
     <string name="fb_login_protocol_scheme">fb949336838939681</string>
+    <string name="title_activity_new_site_form">NewSiteForm</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
 
     <!-- Twitter consumer key and secret -->
-<!--    <string name="twitter_consumer_key" translatable="false">YOUR_CONSUMER_KEY</string>-->
-<!--    <string name="twitter_consumer_secret" translatable="false">YOUR_CONSUMER_SECRET</string>-->
+    <!--    <string name="twitter_consumer_key" translatable="false">YOUR_CONSUMER_KEY</string>-->
+    <!--    <string name="twitter_consumer_secret" translatable="false">YOUR_CONSUMER_SECRET</string>-->
 
 </resources>
