@@ -61,27 +61,22 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, 100); //Start Activity for Result
             }
         });
-
-//        facebook_login.registerCallback(CallbackManager.Factory.create(), new FacebookCallback<LoginResult>() {
-//            @Override
-//            public void onSuccess(LoginResult loginResult) {
-//                Log.d("UncoveringHistoryFirebase", "nbvcx");
-//                AccessToken token = loginResult.getAccessToken();
-//                authCredential = FacebookAuthProvider.getCredential(token.getToken());
-//                firebaseAuthentication(authCredential);
-//            }
-//
-//            @Override
-//            public void onCancel() {
-//
-//            }
-//
-//            @Override
-//            public void onError(FacebookException error) {
-//            }
-//        });
     }
 
+    private void firebaseAuthentication(AuthCredential authCredential){
+        firebaseAuth.signInWithCredential(authCredential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) { //If the Authentication was successful call the Profile Class
+                            startActivity(new Intent(MainActivity.this, Profile.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                            Toast.makeText(getApplicationContext(), "Firebase Authentication Successful", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Firebase Authentication Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -89,24 +84,13 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 100) { //If the RequestCode is for Firebase Authenticaion then continue
             Task<GoogleSignInAccount> signInAccountTask = GoogleSignIn.getSignedInAccountFromIntent(data);
             if (signInAccountTask.isSuccessful()) {
-//                displayToast("Google Sign in Successful");
+                Toast.makeText(getApplicationContext(), "Google Authentication Successful", Toast.LENGTH_SHORT).show();
             }
             try {
                 googleSignInAccount = signInAccountTask.getResult(ApiException.class);
                 if (googleSignInAccount != null) {
                     authCredential = GoogleAuthProvider.getCredential(googleSignInAccount.getIdToken(), null);
-                    firebaseAuth.signInWithCredential(authCredential)
-                            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()) { //If the Authentication was successful call the Profile Class
-                                        startActivity(new Intent(MainActivity.this, Profile.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                                        Toast.makeText(getApplicationContext(), "Firebase Authentication Successful", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(getApplicationContext(), "Firebase Authentication Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
+                    firebaseAuthentication(authCredential);
                 }
 
             } catch (ApiException e) {

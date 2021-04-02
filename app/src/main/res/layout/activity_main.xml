@@ -17,18 +17,6 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/facebook_login"
-        android:layout_width="match_parent"
-        android:layout_height="66dp"
-        android:layout_margin="16dp"
-        android:layout_marginBottom="232dp"
-        app:layout_constraintBottom_toTopOf="@+id/google_login"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <Space
         android:id="@+id/space"
         android:layout_width="wrap_content"
