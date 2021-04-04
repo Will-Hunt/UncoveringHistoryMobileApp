@@ -22,10 +22,12 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "UncoveringHistory";
     GoogleSignInOptions googleSignInOptions;
     GoogleSignInClient googleSignInClient;
     GoogleSignInAccount googleSignInAccount;
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null) { //If a user is signed in
-            startActivity(new Intent(MainActivity.this, Profile.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+            startActivity(new Intent(MainActivity.this, Profile.class));
         }
 
         // Initializing Sign In Options

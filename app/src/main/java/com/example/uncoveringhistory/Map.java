@@ -21,27 +21,24 @@ public class Map extends AppCompatActivity {
 
         bottomNavigationView.setSelectedItemId(R.id.map);
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
-                    case R.id.map:
-                        return true;
-                    case R.id.routes:
-                        startActivity(new Intent(getApplicationContext(), Routes.class));
-                        overridePendingTransition(0,0);
-                        return true;
-                    case R.id.favourites:
-                        startActivity(new Intent(getApplicationContext(), Favourites.class));
-                        overridePendingTransition(0,0);
-                        return true;
-                    case R.id.profile:
-                        startActivity(new Intent(getApplicationContext(), Profile.class));
-                        overridePendingTransition(0,0);
-                        return true;
-                }
-                return false;
+        bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
+            switch (menuItem.getItemId()){
+                case R.id.map:
+                    return true;
+                case R.id.routes:
+                    startActivity(new Intent(getApplicationContext(), Routes.class));
+                    overridePendingTransition(0,0);
+                    return true;
+                case R.id.favourites:
+                    startActivity(new Intent(getApplicationContext(), Favourites.class));
+                    overridePendingTransition(0,0);
+                    return true;
+                case R.id.profile:
+                    startActivity(new Intent(getApplicationContext(), Profile.class));
+                    overridePendingTransition(0,0);
+                    return true;
             }
+            return false;
         });
     }
 }

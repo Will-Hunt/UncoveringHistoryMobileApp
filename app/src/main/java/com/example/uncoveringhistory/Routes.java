@@ -17,37 +17,28 @@ public class Routes extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routes);
-        
-        // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
-
-        myRef.setValue("Hello, World!");
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         bottomNavigationView.setSelectedItemId(R.id.routes);
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
-                    case R.id.map:
-                        startActivity(new Intent(getApplicationContext(), Map.class));
-                        overridePendingTransition(0,0);return true;
-                    case R.id.routes:
-                        return true;
-                    case R.id.favourites:
-                        startActivity(new Intent(getApplicationContext(), Favourites.class));
-                        overridePendingTransition(0,0);
-                        return true;
-                    case R.id.profile:
-                        startActivity(new Intent(getApplicationContext(), Profile.class));
-                        overridePendingTransition(0,0);
-                        return true;
-                }
-                return false;
+        bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
+            switch (menuItem.getItemId()){
+                case R.id.map:
+                    startActivity(new Intent(getApplicationContext(), Map.class));
+                    overridePendingTransition(0,0);return true;
+                case R.id.routes:
+                    return true;
+                case R.id.favourites:
+                    startActivity(new Intent(getApplicationContext(), Favourites.class));
+                    overridePendingTransition(0,0);
+                    return true;
+                case R.id.profile:
+                    startActivity(new Intent(getApplicationContext(), Profile.class));
+                    overridePendingTransition(0,0);
+                    return true;
             }
+            return false;
         });
     }
 }

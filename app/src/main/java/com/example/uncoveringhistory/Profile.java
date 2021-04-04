@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -23,10 +24,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class Profile extends AppCompatActivity {
+    private static final String TAG = "UncoveringHistory";
     ImageView login_image;
     TextView login_name;
-    Button logout_btn;
-    Button add_new_site;
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     GoogleSignInClient googleSignInClient;
@@ -45,55 +45,41 @@ public class Profile extends AppCompatActivity {
             login_name.setText(firebaseUser.getDisplayName());
         }
 
-        findViewById(R.id.add_new_site).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Profile.this, Map.class));
-            }
+        findViewById(R.id.add_new_site).setOnClickListener(view -> {
+            startActivity(new Intent(Profile.this, CreateNewSite.class));
         });
 
         googleSignInClient = GoogleSignIn.getClient(Profile.this, GoogleSignInOptions.DEFAULT_SIGN_IN);
-        findViewById(R.id.logout_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            firebaseAuth.signOut();
-                            Toast.makeText(getApplicationContext(), "Successfully Logged Out", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(Profile.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                        }
-                    }
-                });
+        findViewById(R.id.logout_btn).setOnClickListener(view -> googleSignInClient.signOut().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                firebaseAuth.signOut();
+                Toast.makeText(getApplicationContext(), "Successfully Logged Out", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(Profile.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             }
-        });
+        }));
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         bottomNavigationView.setSelectedItemId(R.id.profile);
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.map:
-                        startActivity(new Intent(getApplicationContext(), Map.class));
-                        overridePendingTransition(0, 0);
-                        return true;
-                    case R.id.routes:
-                        startActivity(new Intent(getApplicationContext(), Routes.class));
-                        overridePendingTransition(0, 0);
-                        return true;
-                    case R.id.favourites:
-                        startActivity(new Intent(getApplicationContext(), Favourites.class));
-                        overridePendingTransition(0, 0);
-                        return true;
-                    case R.id.profile:
-                        return true;
-                }
-                return false;
+        bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.id.map:
+                    startActivity(new Intent(getApplicationContext(), Map.class));
+                    overridePendingTransition(0, 0);
+                    return true;
+                case R.id.routes:
+                    startActivity(new Intent(getApplicationContext(), Routes.class));
+                    overridePendingTransition(0, 0);
+                    return true;
+                case R.id.favourites:
+                    startActivity(new Intent(getApplicationContext(), Favourites.class));
+                    overridePendingTransition(0, 0);
+                    return true;
+                case R.id.profile:
+                    return true;
             }
+            return false;
         });
 
     }
