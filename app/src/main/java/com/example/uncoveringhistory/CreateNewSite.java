@@ -29,18 +29,15 @@ public class CreateNewSite extends AppCompatActivity {
         submitBtn = findViewById(R.id.submit_historical_site);
 
         siteDbRef = FirebaseDatabase.getInstance().getReference().child("Historical Sites");
-        submitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name = siteName.getText().toString();
-                String description = siteDescription.getText().toString();
-                String location = siteLoc.getText().toString();
-                HistoricalSite site =  new HistoricalSite(name,description,location);
+        submitBtn.setOnClickListener(v -> {
+            String name = siteName.getText().toString();
+            String description = siteDescription.getText().toString();
+            String location = siteLoc.getText().toString();
+            HistoricalSite site =  new HistoricalSite(name,description,location);
 
-                siteDbRef.push().setValue(site);
-                startActivity(new Intent(CreateNewSite.this, Profile.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                Toast.makeText(getApplicationContext(), "Google Authentication Successful", Toast.LENGTH_LONG).show();
-            }
+            siteDbRef.push().setValue(site);
+            startActivity(new Intent(CreateNewSite.this, Profile.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+            Toast.makeText(getApplicationContext(), "Google Authentication Successful", Toast.LENGTH_LONG).show();
         });
     }
 }
