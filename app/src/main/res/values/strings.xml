@@ -31,4 +31,7 @@
     </array>
     <string name="site_profile_picture">Site Profile Picture</string>
     <string name="upload_site">Upload Site!</string>
+    <string name="site_image">Site Image</string>
+    <string name="select_image">Select Image</string>
+    <string name="upload_image">Upload Image</string>
 </resources>
