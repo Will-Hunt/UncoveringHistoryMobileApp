@@ -32,12 +32,10 @@ public class ListAdapter extends ArrayAdapter {
 
         TextView tv_name = listItemView.findViewById(R.id.text_view_name);
         TextView tv_description = listItemView.findViewById(R.id.text_view_description);
-        TextView tv_location = listItemView.findViewById(R.id.text_view_location);
         HistoricalSite site = historicalSiteList.get(position);
 
         tv_name.setText(site.getName());
         tv_description.setText(site.getDescription());
-        tv_location.setText(site.getLocation());
 
         return listItemView;
     }
