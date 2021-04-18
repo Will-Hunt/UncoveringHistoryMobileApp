@@ -96,7 +96,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     String name = dataSnapshot.child("name").getValue(String.class);
                     String streetAddress = dataSnapshot.child("location").getValue(String.class);
                     LatLng location = getLocationFromAddress(streetAddress);
-                    Log.d("UncoveringHistory", "onDataChange: " + location);
                     googleMap.addMarker(new MarkerOptions().position(location).title(name));
                     googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
                 }
