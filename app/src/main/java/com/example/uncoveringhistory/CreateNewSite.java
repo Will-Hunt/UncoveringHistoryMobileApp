@@ -16,18 +16,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 
 import java.util.UUID;
 
 public class CreateNewSite extends AppCompatActivity {
 
     final int PICK_IMAGE_REQUEST = 111;
+    String imageName;
     EditText siteName, siteDescription, siteLoc;
     Button selectImg, submitBtn;
     ImageView siteImg;
     Uri imageUri;
     DatabaseReference databaseReference;
     StorageReference imageToUpload;
+    StorageTask uploadInProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +47,7 @@ public class CreateNewSite extends AppCompatActivity {
 
         submitBtn = findViewById(R.id.submit_historical_site);
         submitBtn.setOnClickListener(v -> {
-            uploadImage();
+            if(uploadInProgress != null && uploadInProgress.isInProgress()) uploadImage();
             uploadSite();
         });
     }
@@ -62,14 +65,19 @@ public class CreateNewSite extends AppCompatActivity {
 
     // UploadImage method
     private void uploadImage() {
-        imageToUpload = FirebaseStorage.getInstance().getReference().child("images/" + UUID.randomUUID().toString());
+        if(imageUri != null){
+            Toast.makeText(getApplicationContext(), "Image Couldn't be found", Toast.LENGTH_LONG).show();
+            return;
+        }
+        imageName = UUID.randomUUID().toString();
+        imageToUpload = FirebaseStorage.getInstance().getReference().child("images/" + imageName);
 
         // Code for showing progressDialog while uploading
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Uploading...");
         progressDialog.show();
 
-        imageToUpload.putFile(imageUri)
+        uploadInProgress = imageToUpload.putFile(imageUri)
                 .addOnSuccessListener(taskSnapshot -> {
                     progressDialog.dismiss();
                     Toast.makeText(getApplicationContext(), "Image Upload Successful", Toast.LENGTH_LONG).show();
@@ -94,7 +102,7 @@ public class CreateNewSite extends AppCompatActivity {
         String name = siteName.getText().toString();
         String description = siteDescription.getText().toString();
         String location = siteLoc.getText().toString();
-        HistoricalSite site = new HistoricalSite(name, description, location);
+        HistoricalSite site = new HistoricalSite(name, description, location, imageName);
 
         databaseReference.push().setValue(site);
         startActivity(new Intent(CreateNewSite.this, Profile.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));

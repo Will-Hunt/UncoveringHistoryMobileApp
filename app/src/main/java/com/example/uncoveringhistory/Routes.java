@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -40,18 +41,18 @@ public class Routes extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 historicalSiteList.clear();
 
-                for( DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    HistoricalSite historicalSite = new HistoricalSite(dataSnapshot.child("name").getValue(String.class),dataSnapshot.child("description").getValue(String.class), dataSnapshot.child("location").getValue(String.class));
-                    historicalSiteList.add(historicalSite);
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    historicalSiteList.add(dataSnapshot.getValue(HistoricalSite.class));
                 }
                 Log.d("UncoveringHistory", "list: " + historicalSiteList);
-                ListAdapter adapter = new ListAdapter(Routes.this,historicalSiteList);
-                listView.setAdapter(adapter);
+
+//                ListAdapter adapter = new ListAdapter(Routes.this,historicalSiteList);
+//                listView.setAdapter(adapter);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(Routes.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -59,19 +60,20 @@ public class Routes extends AppCompatActivity {
         bottomNavigationView.setSelectedItemId(R.id.routes);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
-            switch (menuItem.getItemId()){
+            switch (menuItem.getItemId()) {
                 case R.id.map:
                     startActivity(new Intent(getApplicationContext(), Map.class));
-                    overridePendingTransition(0,0);return true;
+                    overridePendingTransition(0, 0);
+                    return true;
                 case R.id.routes:
                     return true;
                 case R.id.favourites:
                     startActivity(new Intent(getApplicationContext(), Favourites.class));
-                    overridePendingTransition(0,0);
+                    overridePendingTransition(0, 0);
                     return true;
                 case R.id.profile:
                     startActivity(new Intent(getApplicationContext(), Profile.class));
-                    overridePendingTransition(0,0);
+                    overridePendingTransition(0, 0);
                     return true;
             }
             return false;

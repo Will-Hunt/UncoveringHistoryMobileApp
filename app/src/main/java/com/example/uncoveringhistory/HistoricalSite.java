@@ -4,11 +4,13 @@ public class HistoricalSite {
     String name;
     String description;
     String location;
+//    String imageName;
 
-    public HistoricalSite(String name, String description, String location) {
+    public HistoricalSite(String name, String description, String location, String imageName) {
         this.name = name;
         this.description = description;
         this.location = location;
+//        this.imageName = imageName;
     }
 
     public String getName() {
@@ -22,4 +24,6 @@ public class HistoricalSite {
     public String getLocation() {
         return location;
     }
+
+//    public String getImage() { return imageName; }
 }
