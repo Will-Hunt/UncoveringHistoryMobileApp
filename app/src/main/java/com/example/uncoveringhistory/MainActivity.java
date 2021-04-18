@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null) { //If a user is signed in
-            startActivity(new Intent(MainActivity.this, Profile.class));
+            startActivity(new Intent(MainActivity.this, Map.class));
         }
 
         // Initializing Sign In Options
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) { //If the Authentication was successful call the Profile Class
-                            startActivity(new Intent(MainActivity.this, Profile.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                            startActivity(new Intent(MainActivity.this, Map.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                             Toast.makeText(getApplicationContext(), "Firebase Authentication Successful", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(getApplicationContext(), "Firebase Authentication Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100) { //If the RequestCode is for Firebase Authenticaion then continue
+        if (requestCode == 100) { //If the RequestCode is for Firebase Authentication then continue
             Task<GoogleSignInAccount> signInAccountTask = GoogleSignIn.getSignedInAccountFromIntent(data);
             if (signInAccountTask.isSuccessful()) {
                 Toast.makeText(getApplicationContext(), "Google Authentication Successful", Toast.LENGTH_SHORT).show();

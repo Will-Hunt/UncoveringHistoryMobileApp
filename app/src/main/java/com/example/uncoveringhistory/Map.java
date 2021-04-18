@@ -2,7 +2,10 @@ package com.example.uncoveringhistory;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +23,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.io.IOException;
+import java.util.List;
 
 public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -61,6 +67,26 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         });
     }
 
+    public LatLng getLocationFromAddress(String strAddress) {
+        Geocoder coder = new Geocoder(this);
+        List<Address> address;
+        LatLng latLng = null;
+
+        try {
+            address = coder.getFromLocationName(strAddress, 5);
+            if (address == null) {
+                return null;
+            }
+            Address location = address.get(0);
+
+            latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return latLng;
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         siteDbRef.addValueEventListener(new ValueEventListener() {
@@ -68,11 +94,10 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     String name = dataSnapshot.child("name").getValue(String.class);
-                    Double latitude = dataSnapshot.child("location").child("latitude").getValue(Double.class);
-                    Double longitude = dataSnapshot.child("location").child("longitude").getValue(Double.class);
-                    LatLng location = new LatLng(latitude, longitude);
+                    String streetAddress = dataSnapshot.child("location").getValue(String.class);
+                    LatLng location = getLocationFromAddress(streetAddress);
+                    Log.d("UncoveringHistory", "onDataChange: " + location);
                     googleMap.addMarker(new MarkerOptions().position(location).title(name));
-
                     googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
                 }
             }

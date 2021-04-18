@@ -6,6 +6,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -33,7 +34,7 @@ import java.util.UUID;
 public class CreateNewSite extends AppCompatActivity {
 
     final int PICK_IMAGE_REQUEST = 111;
-    String imageName, historicalTypeSelected;
+    String name, description, location, imageName, historicalTypeSelected;
     EditText siteName, siteDescription, siteLoc;
     Spinner siteType;
     Button selectImg, submitBtn;
@@ -81,7 +82,6 @@ public class CreateNewSite extends AppCompatActivity {
 
         submitBtn = findViewById(R.id.submit_historical_site);
         submitBtn.setOnClickListener(v -> {
-            if (uploadInProgress != null && uploadInProgress.isInProgress()) uploadImage();
             uploadSite();
         });
     }
@@ -96,14 +96,8 @@ public class CreateNewSite extends AppCompatActivity {
         }
     }
 
-
     // UploadImage method
     private void uploadImage() {
-        if (imageUri != null) {
-            Toast.makeText(getApplicationContext(), "Image Couldn't be found", Toast.LENGTH_LONG).show();
-            return;
-        }
-        imageName = UUID.randomUUID().toString();
         imageToUpload = FirebaseStorage.getInstance().getReference().child("images/" + imageName);
 
         // Code for showing progressDialog while uploading
@@ -128,40 +122,19 @@ public class CreateNewSite extends AppCompatActivity {
 
     private void uploadSite() {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Historical Sites");
-
         siteName = findViewById(R.id.historical_site_name);
         siteDescription = findViewById(R.id.historical_site_description);
         siteLoc = findViewById(R.id.historical_site_location);
 
-        String name = siteName.getText().toString();
-        String description = siteDescription.getText().toString();
-        String location = siteLoc.getText().toString();
-        LatLng latLng = getLocationFromAddress(location);
+        name = siteName.getText().toString();
+        description = siteDescription.getText().toString();
+        location = siteLoc.getText().toString();
+        imageName = UUID.randomUUID().toString();
+        uploadImage();
 
-        HistoricalSite site = new HistoricalSite(name, description, historicalTypeSelected, latLng, imageName);
-
+        HistoricalSite site = new HistoricalSite(name, description, historicalTypeSelected, location, imageName);
         databaseReference.push().setValue(site);
         Toast.makeText(getApplicationContext(), "Site Upload Successful", Toast.LENGTH_LONG).show();
         startActivity(new Intent(CreateNewSite.this, Profile.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-    }
-
-    public LatLng getLocationFromAddress(String strAddress) {
-        Geocoder coder = new Geocoder(this);
-        List<Address> address;
-        LatLng latLng = null;
-
-        try {
-            address = coder.getFromLocationName(strAddress, 5);
-            if (address == null) {
-                return null;
-            }
-            Address location = address.get(0);
-
-            latLng = new LatLng(location.getLatitude() * 1E6, location.getLongitude() * 1E6);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return latLng;
     }
 }

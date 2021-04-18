@@ -6,10 +6,10 @@ public class HistoricalSite {
     String name;
     String description;
     String type;
-    LatLng location;
+    String location;
     String imageName;
 
-    public HistoricalSite(String name, String description, String type, LatLng location, String imageName) {
+    public HistoricalSite(String name, String description, String type, String location, String imageName) {
         this.name = name;
         this.description = description;
         this.type = type;
@@ -20,9 +20,16 @@ public class HistoricalSite {
     public String getName() {
         return name;
     }
-
-    public String getDescription() {
+    public String getDescription(){
         return description;
     }
-
+    public String getLocation() {
+        return location;
+    }
+    public String getType(){
+        return type;
+    }
+    public String getImageName() {
+        return imageName;
+    }
 }

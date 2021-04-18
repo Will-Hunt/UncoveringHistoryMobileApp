@@ -36,26 +36,26 @@ public class Routes extends AppCompatActivity {
         listView = findViewById(R.id.historical_site_list_view);
         historicalSiteList = new ArrayList<>();
         siteDbRef = FirebaseDatabase.getInstance().getReference("Historical Sites");
-        siteDbRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                historicalSiteList.clear();
-
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    historicalSiteList.add(dataSnapshot.getValue(HistoricalSite.class));
-
-                }
-                Log.d("UncoveringHistory", "list: " + historicalSiteList);
-
-//                ListAdapter adapter = new ListAdapter(Routes.this,historicalSiteList);
-//                listView.setAdapter(adapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(Routes.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        Log.d("UncoveringHistory", "Routes: " + historicalSiteList);
+//        siteDbRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                historicalSiteList.clear();
+//
+//                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                    historicalSiteList.add(dataSnapshot.getValue(HistoricalSite.class));
+//
+//                }
+//
+////                ListAdapter adapter = new ListAdapter(Routes.this,historicalSiteList);
+////                listView.setAdapter(adapter);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Toast.makeText(Routes.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         bottomNavigationView.setSelectedItemId(R.id.routes);
