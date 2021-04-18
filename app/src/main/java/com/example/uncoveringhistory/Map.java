@@ -22,6 +22,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
     DatabaseReference siteDbRef;
@@ -72,7 +74,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     Double latitude = dataSnapshot.child("location").child("latitude").getValue(Double.class);
                     Double longitude = dataSnapshot.child("location").child("longitude").getValue(Double.class);
                     LatLng location = new LatLng(latitude, longitude);
-
                     googleMap.addMarker(new MarkerOptions().position(location).title(name));
 
                     googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
