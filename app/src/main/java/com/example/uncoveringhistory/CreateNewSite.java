@@ -2,29 +2,40 @@ package com.example.uncoveringhistory;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class CreateNewSite extends AppCompatActivity {
 
     final int PICK_IMAGE_REQUEST = 111;
-    String imageName;
+    String imageName, historicalTypeSelected;
     EditText siteName, siteDescription, siteLoc;
+    Spinner siteType;
     Button selectImg, submitBtn;
     ImageView siteImg;
     Uri imageUri;
@@ -32,10 +43,33 @@ public class CreateNewSite extends AppCompatActivity {
     StorageReference imageToUpload;
     StorageTask uploadInProgress;
 
+    List<String> historicalTypes = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_site);
+
+        siteType = findViewById(R.id.historical_site_type);
+        historicalTypes.add("Medieval");
+        historicalTypes.add("Early Modern");
+        historicalTypes.add("Modern");
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, historicalTypes);
+        siteType.setAdapter(dataAdapter);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        siteType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                historicalTypeSelected = historicalTypes.get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         selectImg = findViewById(R.id.historical_site_selectImg);
         selectImg.setOnClickListener(v -> {
@@ -47,7 +81,7 @@ public class CreateNewSite extends AppCompatActivity {
 
         submitBtn = findViewById(R.id.submit_historical_site);
         submitBtn.setOnClickListener(v -> {
-            if(uploadInProgress != null && uploadInProgress.isInProgress()) uploadImage();
+            if (uploadInProgress != null && uploadInProgress.isInProgress()) uploadImage();
             uploadSite();
         });
     }
@@ -65,7 +99,7 @@ public class CreateNewSite extends AppCompatActivity {
 
     // UploadImage method
     private void uploadImage() {
-        if(imageUri != null){
+        if (imageUri != null) {
             Toast.makeText(getApplicationContext(), "Image Couldn't be found", Toast.LENGTH_LONG).show();
             return;
         }
@@ -102,10 +136,32 @@ public class CreateNewSite extends AppCompatActivity {
         String name = siteName.getText().toString();
         String description = siteDescription.getText().toString();
         String location = siteLoc.getText().toString();
-        HistoricalSite site = new HistoricalSite(name, description, location, imageName);
+        LatLng latLng = getLocationFromAddress(location);
+
+        HistoricalSite site = new HistoricalSite(name, description, historicalTypeSelected, latLng, imageName);
 
         databaseReference.push().setValue(site);
+        Toast.makeText(getApplicationContext(), "Site Upload Successful", Toast.LENGTH_LONG).show();
         startActivity(new Intent(CreateNewSite.this, Profile.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-        Toast.makeText(getApplicationContext(), "Google Authentication Successful", Toast.LENGTH_LONG).show();
+    }
+
+    public LatLng getLocationFromAddress(String strAddress) {
+        Geocoder coder = new Geocoder(this);
+        List<Address> address;
+        LatLng latLng = null;
+
+        try {
+            address = coder.getFromLocationName(strAddress, 5);
+            if (address == null) {
+                return null;
+            }
+            Address location = address.get(0);
+
+            latLng = new LatLng(location.getLatitude() * 1E6, location.getLongitude() * 1E6);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return latLng;
     }
 }

@@ -24,14 +24,10 @@
     <string name="historical_site_name">Historical Site Name</string>
     <string name="historical_site_description">Historical Site Description</string>
     <string name="historical_site_location">Historical Site Location</string>
-    <array name="historical_types">
-        <item>Medieval</item>
-        <item>Early Modern</item>
-        <item>Modern</item>
-    </array>
     <string name="site_profile_picture">Site Profile Picture</string>
     <string name="upload_site">Upload Site!</string>
     <string name="site_image">Site Image</string>
     <string name="select_image">Select Image</string>
     <string name="upload_image">Upload Image</string>
+    <string name="select_historical_type">Select Historical Type</string>
 </resources>

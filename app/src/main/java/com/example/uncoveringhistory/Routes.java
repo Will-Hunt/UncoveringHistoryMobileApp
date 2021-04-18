@@ -43,6 +43,7 @@ public class Routes extends AppCompatActivity {
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     historicalSiteList.add(dataSnapshot.getValue(HistoricalSite.class));
+
                 }
                 Log.d("UncoveringHistory", "list: " + historicalSiteList);
 
