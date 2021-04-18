@@ -2,6 +2,8 @@ package com.example.uncoveringhistory;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
@@ -12,11 +14,14 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 public class CreateNewSite extends AppCompatActivity {
@@ -94,10 +99,33 @@ public class CreateNewSite extends AppCompatActivity {
         String name = siteName.getText().toString();
         String description = siteDescription.getText().toString();
         String location = siteLoc.getText().toString();
-        HistoricalSite site = new HistoricalSite(name, description, location);
+
+        LatLng latLng = getLocationFromAddress(location);
+
+        HistoricalSite site = new HistoricalSite(name, description, latLng);
 
         databaseReference.push().setValue(site);
-        startActivity(new Intent(CreateNewSite.this, Profile.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
         Toast.makeText(getApplicationContext(), "Google Authentication Successful", Toast.LENGTH_LONG).show();
+        startActivity(new Intent(CreateNewSite.this, Profile.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+    }
+
+    public LatLng getLocationFromAddress(String strAddress) {
+        Geocoder coder = new Geocoder(this);
+        List<Address> address;
+        LatLng latLng = null;
+
+        try {
+            address = coder.getFromLocationName(strAddress, 5);
+            if (address == null) {
+                return null;
+            }
+            Address location = address.get(0);
+
+            latLng = new LatLng(location.getLatitude() * 1E6, location.getLongitude() * 1E6);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return latLng;
     }
 }

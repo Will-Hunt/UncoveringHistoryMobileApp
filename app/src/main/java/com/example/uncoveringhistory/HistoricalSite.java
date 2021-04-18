@@ -1,17 +1,19 @@
 package com.example.uncoveringhistory;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class HistoricalSite {
     String name;
     String description;
-    String location;
+    LatLng location;
 
-    public HistoricalSite(String name, String description, String location) {
+    public HistoricalSite(String name, String description, LatLng location) {
         this.name = name;
         this.description = description;
         this.location = location;
     }
 
-    public String getName() {
+   public String getName() {
         return name;
     }
 
@@ -19,7 +21,8 @@ public class HistoricalSite {
         return description;
     }
 
-    public String getLocation() {
+    public LatLng getLocation() {
         return location;
     }
+
 }

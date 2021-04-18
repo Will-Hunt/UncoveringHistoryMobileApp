@@ -41,8 +41,8 @@ public class Routes extends AppCompatActivity {
                 historicalSiteList.clear();
 
                 for( DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    HistoricalSite historicalSite = new HistoricalSite(dataSnapshot.child("name").getValue(String.class),dataSnapshot.child("description").getValue(String.class), dataSnapshot.child("location").getValue(String.class));
-                    historicalSiteList.add(historicalSite);
+                    HistoricalSite historicalSite = dataSnapshot.getValue(HistoricalSite.class);
+//                    historicalSiteList.add(historicalSite);
                 }
                 Log.d("UncoveringHistory", "list: " + historicalSiteList);
                 ListAdapter adapter = new ListAdapter(Routes.this,historicalSiteList);

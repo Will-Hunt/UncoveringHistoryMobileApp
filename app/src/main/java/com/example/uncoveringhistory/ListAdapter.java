@@ -37,7 +37,7 @@ public class ListAdapter extends ArrayAdapter {
 
         tv_name.setText(site.getName());
         tv_description.setText(site.getDescription());
-        tv_location.setText(site.getLocation());
+//        tv_location.setText(site.getLocation());
 
         return listItemView;
     }
