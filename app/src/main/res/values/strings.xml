@@ -30,4 +30,6 @@
     <string name="select_image">Select Image</string>
     <string name="upload_image">Upload Image</string>
     <string name="select_historical_type">Select Historical Type</string>
+    <string name="selected_marker_button">View Selected Site</string>
+    <string name="site_image_des">Site Image</string>
 </resources>

@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.util.Log;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,6 +31,7 @@ import java.util.Locale;
 public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
     DatabaseReference siteDbRef;
+    String selectedSite = null;
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -42,6 +43,15 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        Button selectedMarker = findViewById(R.id.selected_marker);
+        selectedMarker.setOnClickListener(v -> {
+            if (selectedSite != null) {
+                Intent intent = new Intent(getApplicationContext(), SitePage.class);
+                intent.putExtra("selectedSite", selectedSite);
+                startActivity(intent);
+            } else Toast.makeText(Map.this, "Please select a Site First", Toast.LENGTH_LONG).show();
+        });
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -78,7 +88,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             Address location = address.get(0);
             latLng = new LatLng(location.getLatitude(), location.getLongitude());
         } catch (IOException e) {
-            Toast.makeText(Map.this, "Error Occurred, Restart Device", Toast.LENGTH_LONG).show();
+            Toast.makeText(Map.this, "Error Occurred, Restart Device", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
         return latLng;
@@ -105,18 +115,13 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 Toast.makeText(Map.this, "Error loading Markers", Toast.LENGTH_SHORT).show();
             }
         });
+
+        googleMap.setOnMarkerClickListener(marker -> {
+            selectedSite = marker.getTitle();
+            Toast.makeText(Map.this, "Selected location is " + selectedSite, Toast.LENGTH_SHORT).show();
+            return false;
+        });
     }
 
 
-//        // adding on click listener to marker of google maps.
-//        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-//            @Override
-//            public boolean onMarkerClick(Marker marker) {
-//                // on marker click we are getting the title of our marker
-//                // which is clicked and displaying it in a toast message.
-//                String markerName = marker.getTitle();
-//                Toast.makeText(MapsActivity.this, "Clicked location is " + markerName, Toast.LENGTH_SHORT).show();
-//                return false;
-//            }
-//        });
 }
