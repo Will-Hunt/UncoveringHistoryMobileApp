@@ -3,6 +3,7 @@ package com.example.uncoveringhistory;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +29,7 @@ public class Routes extends AppCompatActivity {
     List<HistoricalSite> historicalSiteList;
     DatabaseReference siteDbRef;
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,11 +43,15 @@ public class Routes extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 historicalSiteList.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    historicalSiteList.add(dataSnapshot.getValue(HistoricalSite.class));
+                    HistoricalSite historicalSite = new HistoricalSite(dataSnapshot.child("name").getValue(String.class),
+                            dataSnapshot.child("description").getValue(String.class),
+                            dataSnapshot.child("type").getValue(String.class),
+                            dataSnapshot.child("location").getValue(String.class),
+                            dataSnapshot.child("imageName").getValue(String.class)
+                    );
+                    historicalSiteList.add(historicalSite);
                 }
-                Log.d("UncoveringHistory", "onDataChange: " + historicalSiteList);
-
-                listView.setAdapter(new ListAdapter(Routes.this,historicalSiteList));
+                listView.setAdapter(new ListAdapter(Routes.this, historicalSiteList));
             }
 
             @Override

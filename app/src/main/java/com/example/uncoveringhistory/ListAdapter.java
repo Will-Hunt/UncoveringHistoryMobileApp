@@ -15,11 +15,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectStreamException;
 import java.util.List;
 
 public class ListAdapter extends ArrayAdapter {
@@ -44,8 +46,8 @@ public class ListAdapter extends ArrayAdapter {
         TextView tv_name = listItemView.findViewById(R.id.text_view_name);
         TextView tv_type = listItemView.findViewById(R.id.text_view_type);
         HistoricalSite site = historicalSiteList.get(position);
+        Log.d("UncoveringHistory", "getView: " + site);
 
-        Log.d("UncoveringHistory", "getView: " + historicalSiteList);
         try {
             File file = File.createTempFile("image", "jpg");
             imageToUpload = FirebaseStorage.getInstance().getReferenceFromUrl("gs://uncovering-history-mobile-app.appspot.com/images/" + site.getImageName());

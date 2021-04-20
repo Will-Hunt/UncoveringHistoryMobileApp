@@ -26,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -68,20 +69,16 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
     }
 
     public LatLng getLocationFromAddress(String strAddress) {
-        Geocoder coder = new Geocoder(this);
-        List<Address> address;
+        final Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        final List<Address> address;
         LatLng latLng = null;
-
         try {
-            address = coder.getFromLocationName(strAddress, 5);
-            if (address == null) {
-                return null;
-            }
+            address = geocoder.getFromLocationName(strAddress, 1);
+            if (address == null) return null;
             Address location = address.get(0);
-
             latLng = new LatLng(location.getLatitude(), location.getLongitude());
-
         } catch (IOException e) {
+            Toast.makeText(Map.this, "Error Occurred, Restart Device", Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
         return latLng;
@@ -96,8 +93,10 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     String name = dataSnapshot.child("name").getValue(String.class);
                     String streetAddress = dataSnapshot.child("location").getValue(String.class);
                     LatLng location = getLocationFromAddress(streetAddress);
-                    googleMap.addMarker(new MarkerOptions().position(location).title(name));
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+                    if (location != null) {
+                        googleMap.addMarker(new MarkerOptions().position(location).title(name));
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+                    }
                 }
             }
 
