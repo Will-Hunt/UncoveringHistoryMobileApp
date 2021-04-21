@@ -38,6 +38,7 @@ public class CreateNewSite extends AppCompatActivity {
     EditText siteName, siteDescription, siteLoc;
     Spinner siteType;
     Button selectImg, submitBtn;
+    Boolean favourite;
     ImageView siteImg;
     Uri imageUri;
     DatabaseReference databaseReference;
@@ -130,9 +131,10 @@ public class CreateNewSite extends AppCompatActivity {
         description = siteDescription.getText().toString();
         location = siteLoc.getText().toString();
         imageName = UUID.randomUUID().toString();
+        favourite = false;
         uploadImage();
 
-        HistoricalSite site = new HistoricalSite(name, description, historicalTypeSelected, location, imageName);
+        HistoricalSite site = new HistoricalSite(name, description, historicalTypeSelected, location, imageName, favourite);
         databaseReference.push().setValue(site);
         Toast.makeText(getApplicationContext(), "Site Upload Successful", Toast.LENGTH_LONG).show();
         startActivity(new Intent(CreateNewSite.this, Profile.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
