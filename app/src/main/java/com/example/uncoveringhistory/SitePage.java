@@ -48,8 +48,7 @@ public class SitePage extends AppCompatActivity {
                                 dataSnapshot.child("description").getValue(String.class),
                                 dataSnapshot.child("type").getValue(String.class),
                                 dataSnapshot.child("location").getValue(String.class),
-                                dataSnapshot.child("imageName").getValue(String.class),
-                                dataSnapshot.child("favourite").getValue(Boolean.class)
+                                dataSnapshot.child("imageName").getValue(String.class)
                         );
                         break;
                     }

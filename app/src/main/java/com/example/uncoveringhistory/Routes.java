@@ -27,7 +27,7 @@ import okhttp3.Route;
 public class Routes extends AppCompatActivity {
 
     ListView listView;
-    List<HistoricalSite> historicalSiteList = new ArrayList<>();
+    List<HistoricalSite> historicalSiteList;
     DatabaseReference siteDbRef;
 
     @SuppressLint("NonConstantResourceId")
@@ -37,8 +37,8 @@ public class Routes extends AppCompatActivity {
         setContentView(R.layout.activity_routes);
 
         listView = findViewById(R.id.historical_site_list_view);
+        historicalSiteList = new ArrayList<>();
         siteDbRef = FirebaseDatabase.getInstance().getReference("Historical Sites");
-
         siteDbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -48,8 +48,7 @@ public class Routes extends AppCompatActivity {
                             dataSnapshot.child("description").getValue(String.class),
                             dataSnapshot.child("type").getValue(String.class),
                             dataSnapshot.child("location").getValue(String.class),
-                            dataSnapshot.child("imageName").getValue(String.class),
-                            dataSnapshot.child("favourite").getValue(Boolean.class)
+                            dataSnapshot.child("imageName").getValue(String.class)
                     );
                     historicalSiteList.add(historicalSite);
                 }
