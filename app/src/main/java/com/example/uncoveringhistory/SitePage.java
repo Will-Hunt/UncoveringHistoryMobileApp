@@ -43,19 +43,18 @@ public class SitePage extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    if(dataSnapshot.child("name").getValue(String.class).equals(siteName)){
+                    if (dataSnapshot.child("name").getValue(String.class).equals(siteName)) {
                         historicalSite = new HistoricalSite(dataSnapshot.child("name").getValue(String.class),
                                 dataSnapshot.child("description").getValue(String.class),
                                 dataSnapshot.child("type").getValue(String.class),
                                 dataSnapshot.child("location").getValue(String.class),
                                 dataSnapshot.child("imageName").getValue(String.class)
                         );
+                        break;
                     }
-                    TextView siteName = findViewById(R.id.site_page_name);
-                    siteName.setText(historicalSite.getName());
-
-//                    showSite(historicalSite);
                 }
+                showSite(historicalSite);
+
             }
 
             @Override
@@ -91,31 +90,30 @@ public class SitePage extends AppCompatActivity {
         });
     }
 
-    public void showSite(HistoricalSite historicalSite){
-//        try {
-//            ImageView siteImage = findViewById(R.id.site_page_image);
-//            File file = File.createTempFile("image", "jpg");
-//            String image = "gs://uncovering-history-mobile-app.appspot.com/images/" + historicalSite.getImageName();
-//            imageToShow = FirebaseStorage.getInstance().getReferenceFromUrl(image);
-//            imageToShow.getFile(file).addOnSuccessListener(taskSnapshot -> {
-//                Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-//                siteImage.setImageBitmap(bitmap);
-//            });
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
+    public void showSite(HistoricalSite historicalSite) {
+        try {
+            ImageView siteImage = findViewById(R.id.site_page_image);
+            File file = File.createTempFile("image", "jpg");
+            String image = "gs://uncovering-history-mobile-app.appspot.com/images/" + historicalSite.getImageName();
+            imageToShow = FirebaseStorage.getInstance().getReferenceFromUrl(image);
+            imageToShow.getFile(file).addOnSuccessListener(taskSnapshot -> {
+                Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                siteImage.setImageBitmap(bitmap);
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         TextView siteName = findViewById(R.id.site_page_name);
         siteName.setText(historicalSite.getName());
 
-//        TextView siteType = findViewById(R.id.site_page_type);
-//        siteType.setText(historicalSite.getType());
-//
-//        TextView siteLocation = findViewById(R.id.site_page_location);
-//        siteLocation.setText(historicalSite.getLocation());
-//
-//        TextView siteDes = findViewById(R.id.site_page_description);
-//        siteDes.setText(historicalSite.getDescription());
-        Log.d("UncoveringHistory", "showSite: Fickkkk" + historicalSite.getName());
+        TextView siteType = findViewById(R.id.site_page_type);
+        siteType.setText(historicalSite.getType());
+
+        TextView siteLocation = findViewById(R.id.site_page_location);
+        siteLocation.setText(historicalSite.getLocation());
+
+        TextView siteDes = findViewById(R.id.site_page_description);
+        siteDes.setText(historicalSite.getDescription());
     }
 }
