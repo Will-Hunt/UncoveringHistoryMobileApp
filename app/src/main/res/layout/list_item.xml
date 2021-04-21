@@ -29,7 +29,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:textSize="18sp"
+        android:textSize="25sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/text_view_image"
         app:layout_constraintTop_toTopOf="@+id/text_view_image" />
 
@@ -41,5 +42,14 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/text_view_image"
         app:layout_constraintStart_toEndOf="@+id/text_view_image" />
+
+    <Button
+        android:id="@+id/selected_route_site"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Site"
+        app:layout_constraintBottom_toBottomOf="@+id/text_view_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

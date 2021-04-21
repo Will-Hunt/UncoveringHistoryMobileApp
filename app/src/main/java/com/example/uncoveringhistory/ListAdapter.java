@@ -2,12 +2,15 @@ package com.example.uncoveringhistory;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -42,6 +45,8 @@ public class ListAdapter extends ArrayAdapter {
         ImageView tv_image = listItemView.findViewById(R.id.text_view_image);
         TextView tv_name = listItemView.findViewById(R.id.text_view_name);
         TextView tv_type = listItemView.findViewById(R.id.text_view_type);
+        Button tv_button = listItemView.findViewById(R.id.selected_route_site);
+
         HistoricalSite site = historicalSiteList.get(position);
 
         try {
@@ -59,6 +64,11 @@ public class ListAdapter extends ArrayAdapter {
         tv_name.setText(site.getName());
         tv_type.setText(site.getType());
 
+        tv_button.setOnClickListener(v -> {
+            Intent intent = new Intent(context.getApplicationContext(), SitePage.class);
+            intent.putExtra("selectedSite", site.getName());
+            context.startActivity(intent);
+        });
         return listItemView;
     }
 }
