@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,8 +23,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 public class SitePage extends AppCompatActivity {
     HistoricalSite historicalSite;
@@ -37,18 +35,20 @@ public class SitePage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_site_page);
+
         String siteName = getIntent().getStringExtra("selectedSite");
         siteDbRef = FirebaseDatabase.getInstance().getReference("Historical Sites");
         siteDbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    if (dataSnapshot.child("name").getValue(String.class).equals(siteName)) {
+                    if (Objects.equals(dataSnapshot.child("name").getValue(String.class), siteName)) {
                         historicalSite = new HistoricalSite(dataSnapshot.child("name").getValue(String.class),
                                 dataSnapshot.child("description").getValue(String.class),
                                 dataSnapshot.child("type").getValue(String.class),
                                 dataSnapshot.child("location").getValue(String.class),
-                                dataSnapshot.child("imageName").getValue(String.class)
+                                dataSnapshot.child("imageName").getValue(String.class),
+                                dataSnapshot.child("checked").getValue(Boolean.class)
                         );
                         break;
                     }

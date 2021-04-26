@@ -15,7 +15,6 @@
     This string is used for square devices and overridden by hello_world in
     values-round/strings.xml for round devices.
     -->
-    <string name="hello_world">Hello Square World!</string>
 
     <!-- Twitter consumer key and secret -->
     <!--    <string name="twitter_consumer_key" translatable="false">YOUR_CONSUMER_KEY</string>-->
@@ -24,6 +23,7 @@
     <string name="historical_site_name">Historical Site Name</string>
     <string name="historical_site_description">Historical Site Description</string>
     <string name="historical_site_location">Historical Site Location</string>
+
     <string name="site_profile_picture">Site Profile Picture</string>
     <string name="upload_site">Upload Site!</string>
     <string name="site_image">Site Image</string>
@@ -32,4 +32,17 @@
     <string name="select_historical_type">Select Historical Type</string>
     <string name="selected_marker_button">View Selected Site</string>
     <string name="site_image_des">Site Image</string>
+    <string name="create_historical_route">View Historical Route</string>
+    <string name="start_route">Start Route!</string>
+
+    <string name="user_profile_image">User Profile Image</string>
+    <string name="about">About</string>
+    <string name="notifications_settings">Notifications Settings</string>
+    <string name="account_settings">Account Settings</string>
+    <string name="socials">Socials</string>
+    <string name="help_app_settings"><![CDATA[Help & App Settings]]></string>
+    <string name="add_new_site">Add New Site</string>
+    <string name="logout">Logout</string>
+    <string name="about_uncovering_history">About Uncovering History</string>
+    <string name="work_in_progress">Work In Progress</string>
 </resources>

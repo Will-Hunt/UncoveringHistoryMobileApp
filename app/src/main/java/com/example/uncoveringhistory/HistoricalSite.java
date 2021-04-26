@@ -8,13 +8,15 @@ public class HistoricalSite {
     String type;
     String location;
     String imageName;
+    Boolean checked;
 
-    public HistoricalSite(String name, String description, String type, String location, String imageName) {
+    public HistoricalSite(String name, String description, String type, String location, String imageName, Boolean checked) {
         this.name = name;
         this.description = description;
         this.type = type;
         this.location = location;
         this.imageName = imageName;
+        this.checked = checked;
     }
 
     public String getName() {
@@ -31,5 +33,9 @@ public class HistoricalSite {
 
     public String getImageName() {
         return imageName;
+    }
+
+    public Boolean getChecked() {
+        return checked;
     }
 }

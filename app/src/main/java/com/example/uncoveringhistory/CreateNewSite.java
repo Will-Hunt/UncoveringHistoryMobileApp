@@ -2,11 +2,8 @@ package com.example.uncoveringhistory;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,14 +16,12 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -132,7 +127,7 @@ public class CreateNewSite extends AppCompatActivity {
         imageName = UUID.randomUUID().toString();
         uploadImage();
 
-        HistoricalSite site = new HistoricalSite(name, description, historicalTypeSelected, location, imageName);
+        HistoricalSite site = new HistoricalSite(name, description, historicalTypeSelected, location, imageName, false);
         databaseReference.push().setValue(site);
         Toast.makeText(getApplicationContext(), "Site Upload Successful", Toast.LENGTH_LONG).show();
         startActivity(new Intent(CreateNewSite.this, Profile.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));

@@ -6,9 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.widget.Button;
-import android.widget.ListView;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -18,61 +16,50 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class Routes extends AppCompatActivity {
+import okhttp3.Route;
 
-    ListView listView;
-    List<HistoricalSite> historicalSiteList;
+public class RouteMap extends AppCompatActivity {
+
+    HistoricalSite historicalSite;
     List<HistoricalSite> routeList;
+    String routeListAsString;
     DatabaseReference siteDbRef;
 
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_routes);
+        setContentView(R.layout.activity_route_map);
 
-        listView = findViewById(R.id.historical_site_list_view);
-        historicalSiteList = new ArrayList<>();
+        routeListAsString = getIntent().getStringExtra("routeList");
+        Log.d("UncoveringHistory", "onCreate: " + routeListAsString);
         siteDbRef = FirebaseDatabase.getInstance().getReference("Historical Sites");
         siteDbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                historicalSiteList.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    HistoricalSite historicalSite = new HistoricalSite(dataSnapshot.child("name").getValue(String.class),
-                            dataSnapshot.child("description").getValue(String.class),
-                            dataSnapshot.child("type").getValue(String.class),
-                            dataSnapshot.child("location").getValue(String.class),
-                            dataSnapshot.child("imageName").getValue(String.class),
-                            dataSnapshot.child("checked").getValue(Boolean.class)
-                    );
-                    historicalSiteList.add(historicalSite);
-                }
-                listView.setAdapter(new ListAdapter(Routes.this, historicalSiteList));
+//                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                    if (Objects.equals(dataSnapshot.child("name").getValue(String.class), siteName)) {
+//                        historicalSite = new HistoricalSite(dataSnapshot.child("name").getValue(String.class),
+//                                dataSnapshot.child("description").getValue(String.class),
+//                                dataSnapshot.child("type").getValue(String.class),
+//                                dataSnapshot.child("location").getValue(String.class),
+//                                dataSnapshot.child("imageName").getValue(String.class),
+//                                dataSnapshot.child("checked").getValue(Boolean.class)
+//                        );
+//                        break;
+//                    }
+//                }
+//                showSite(historicalSite);
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(Routes.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(RouteMap.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-        Button createRouteButton = findViewById(R.id.create_route);
-        createRouteButton.setOnClickListener(v -> {
-            routeList = new ArrayList<>();
-            for (int i = 0; i < historicalSiteList.size(); i++) {
-                if (historicalSiteList.get(i).getChecked()) {
-                    routeList.add(historicalSiteList.get(i));
-                }
-            }
-            Intent intent = new Intent(getApplicationContext(), RouteMap.class);
-            intent.putExtra("routeList", (Parcelable) routeList);
-            startActivity(intent);
-        });
-
-
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         bottomNavigationView.setSelectedItemId(R.id.routes);
@@ -84,6 +71,8 @@ public class Routes extends AppCompatActivity {
                     overridePendingTransition(0, 0);
                     return true;
                 case R.id.routes:
+                    startActivity(new Intent(getApplicationContext(), Route.class));
+                    overridePendingTransition(0, 0);
                     return true;
                 case R.id.favourites:
                     startActivity(new Intent(getApplicationContext(), Favourites.class));

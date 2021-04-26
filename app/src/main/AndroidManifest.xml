@@ -17,7 +17,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.UncoveringHistory">
-        <activity android:name=".SitePage"></activity>
+        <activity android:name=".WorkInProgressPage"></activity>
+        <activity android:name=".AboutPage" />
+        <activity android:name=".RouteMap" />
+        <activity android:name=".SitePage" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
