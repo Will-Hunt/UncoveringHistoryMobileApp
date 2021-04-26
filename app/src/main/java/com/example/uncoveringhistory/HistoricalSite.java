@@ -1,7 +1,5 @@
 package com.example.uncoveringhistory;
 
-import android.util.Log;
-
 public class HistoricalSite {
     String name;
     String description;

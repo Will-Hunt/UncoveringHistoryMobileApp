@@ -76,9 +76,7 @@ public class CreateNewSite extends AppCompatActivity {
         });
 
         submitBtn = findViewById(R.id.submit_historical_site);
-        submitBtn.setOnClickListener(v -> {
-            uploadSite();
-        });
+        submitBtn.setOnClickListener(v -> uploadSite());
     }
 
     @Override

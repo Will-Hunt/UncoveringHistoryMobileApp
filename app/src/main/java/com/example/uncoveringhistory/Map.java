@@ -42,6 +42,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         siteDbRef = FirebaseDatabase.getInstance().getReference("Historical Sites");
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        assert mapFragment != null;
         mapFragment.getMapAsync(this);
 
         Button selectedMarker = findViewById(R.id.selected_marker);
