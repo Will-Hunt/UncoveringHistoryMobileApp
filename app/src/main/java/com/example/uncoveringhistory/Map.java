@@ -1,22 +1,31 @@
 package com.example.uncoveringhistory;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,17 +36,24 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class Map extends AppCompatActivity implements OnMapReadyCallback {
 
+    private static final String TAG = "UncoveringHistory";
     DatabaseReference siteDbRef;
     String selectedSite = null;
+    String routeList, name, streetAddress;
+    LatLng currentLocation;
+    FusedLocationProviderClient fusedLocationProviderClient;
 
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
+        routeList = getIntent().getStringExtra("routeList");
 
         siteDbRef = FirebaseDatabase.getInstance().getReference("Historical Sites");
 
@@ -79,6 +95,23 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         });
     }
 
+    private LatLng fetchLastLocation() {
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]
+                    {Manifest.permission.ACCESS_FINE_LOCATION}, 78);
+            return null;
+        }
+        Task<Location> task = fusedLocationProviderClient.getLastLocation();
+        task.addOnSuccessListener(location -> {
+            if (location != null) {
+                currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+            }
+        });
+        if (currentLocation == null) currentLocation = new LatLng(51.509865, -0.118092);
+        return currentLocation;
+    }
+
     public LatLng getLocationFromAddress(String strAddress) {
         final Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         final List<Address> address;
@@ -89,7 +122,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             Address location = address.get(0);
             latLng = new LatLng(location.getLatitude(), location.getLongitude());
         } catch (IOException e) {
-            Toast.makeText(Map.this, "Error Occurred, Restart Device", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Map.this, "Error Occurred, Restart Device", Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
         return latLng;
@@ -101,13 +134,25 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    String name = dataSnapshot.child("name").getValue(String.class);
-                    String streetAddress = dataSnapshot.child("location").getValue(String.class);
-                    LatLng location = getLocationFromAddress(streetAddress);
-                    if (location != null) {
-                        googleMap.addMarker(new MarkerOptions().position(location).title(name));
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+                    if (routeList != null) {
+                        if (routeList.contains(Objects.requireNonNull(dataSnapshot.child("name").getValue(String.class)))) {
+                            name = dataSnapshot.child("name").getValue(String.class);
+                            streetAddress = dataSnapshot.child("location").getValue(String.class);
+                            LatLng location = getLocationFromAddress(streetAddress);
+                            if (location != null) {
+                                googleMap.addMarker(new MarkerOptions().position(location).title(name));
+                            }
+                        }
+                    } else {
+                        String name = dataSnapshot.child("name").getValue(String.class);
+                        String streetAddress = dataSnapshot.child("location").getValue(String.class);
+                        LatLng location = getLocationFromAddress(streetAddress);
+                        if (location != null) {
+                            googleMap.addMarker(new MarkerOptions().position(location).title(name));
+
+                        }
                     }
+
                 }
             }
 
@@ -116,6 +161,14 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                 Toast.makeText(Map.this, "Error loading Markers", Toast.LENGTH_SHORT).show();
             }
         });
+
+        currentLocation = fetchLastLocation();
+        if (currentLocation != null) {
+            googleMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+            googleMap.animateCamera(CameraUpdateFactory.newLatLng(currentLocation));
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 11));
+        }
 
         googleMap.setOnMarkerClickListener(marker -> {
             selectedSite = marker.getTitle();

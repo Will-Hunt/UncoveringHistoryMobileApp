@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -18,6 +18,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +28,7 @@ public class Routes extends AppCompatActivity {
 
     ListView listView;
     List<HistoricalSite> historicalSiteList;
-    List<HistoricalSite> routeList;
+    List<String> routeList = new ArrayList<>();
     DatabaseReference siteDbRef;
 
     @SuppressLint("NonConstantResourceId")
@@ -59,17 +62,19 @@ public class Routes extends AppCompatActivity {
                 Toast.makeText(Routes.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
         Button createRouteButton = findViewById(R.id.create_route);
         createRouteButton.setOnClickListener(v -> {
-            routeList = new ArrayList<>();
-            for (int i = 0; i < historicalSiteList.size(); i++) {
-                if (historicalSiteList.get(i).getChecked()) {
-                    routeList.add(historicalSiteList.get(i));
-                }
+            int selectSites = 0;
+            for (int index = 0; index < historicalSiteList.size(); index++) {
+                    routeList.add(historicalSiteList.get(index).getName());
+                selectSites += 1;
             }
-            Intent intent = new Intent(getApplicationContext(), RouteMap.class);
-            intent.putExtra("routeList", (Parcelable) routeList);
-            startActivity(intent);
+            if (selectSites > 1 && routeList != null) {
+                Intent intent = new Intent(getApplicationContext(), Map.class);
+                intent.putExtra("routeList", routeList.toString());
+                startActivity(intent);
+            } else Toast.makeText(Routes.this, "Please select at least 2 Sites First", Toast.LENGTH_LONG).show();
         });
 
 
