@@ -44,7 +44,7 @@ public class Profile extends AppCompatActivity {
         findViewById(R.id.profile_account_button).setOnClickListener(view -> startActivity(new Intent(Profile.this, WorkInProgressPage.class)));
         findViewById(R.id.profile_social_button).setOnClickListener(view -> startActivity(new Intent(Profile.this, WorkInProgressPage.class)));
         findViewById(R.id.profile_help_button).setOnClickListener(view -> startActivity(new Intent(Profile.this, WorkInProgressPage.class)));
-        findViewById(R.id.add_new_site).setOnClickListener(view -> startActivity(new Intent(Profile.this, WorkInProgressPage.class)));
+        findViewById(R.id.add_new_site).setOnClickListener(view -> startActivity(new Intent(Profile.this, CreateNewSite.class)));
 
         googleSignInClient = GoogleSignIn.getClient(Profile.this, GoogleSignInOptions.DEFAULT_SIGN_IN);
         findViewById(R.id.logout_btn).setOnClickListener(view -> googleSignInClient.signOut().addOnCompleteListener(task -> {
