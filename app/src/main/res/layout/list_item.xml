@@ -21,6 +21,7 @@
         android:layout_height="75dp"
         android:layout_alignParentStart="true"
         android:layout_marginStart="8dp"
+        android:orientation="vertical"
         app:layout_constraintStart_toEndOf="@+id/checkBox"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,7 +30,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/text_view_image"
         app:layout_constraintTop_toTopOf="@+id/text_view_image" />
@@ -39,7 +39,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/text_view_image"
         app:layout_constraintStart_toEndOf="@+id/text_view_image" />
 
@@ -47,7 +46,10 @@
         android:id="@+id/selected_route_site"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="View Site"
+        android:layout_marginTop="8dp"
+        android:background="@color/color_primary_background"
+        android:text="@string/view_site"
+        app:iconTint="@color/color_primary_background"
         app:layout_constraintBottom_toBottomOf="@+id/text_view_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_view_name" />

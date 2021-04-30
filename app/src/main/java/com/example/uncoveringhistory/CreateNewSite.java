@@ -47,6 +47,7 @@ public class CreateNewSite extends AppCompatActivity {
         setContentView(R.layout.activity_create_new_site);
 
         siteType = findViewById(R.id.historical_site_type);
+        historicalTypes.add("Select Historical Type");
         historicalTypes.add("Medieval");
         historicalTypes.add("Early Modern");
         historicalTypes.add("Modern");

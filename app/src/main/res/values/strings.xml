@@ -45,4 +45,5 @@
     <string name="logout">Logout</string>
     <string name="about_uncovering_history">About Uncovering History</string>
     <string name="work_in_progress">Work In Progress</string>
+    <string name="view_site">View Site</string>
 </resources>
