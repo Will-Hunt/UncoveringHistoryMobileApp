@@ -9,6 +9,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -112,10 +113,10 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     }
                     googleMap.addPolyline(new PolylineOptions()
                             .color(Color.BLUE)
-                            .width(3)
+                            .width(7)
                             .clickable(false)
                             .addAll(markerPoints));
-
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(markerPoints.get(0), 13));
                 } else {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         addMarker(googleMap, dataSnapshot);
