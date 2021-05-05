@@ -56,7 +56,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-//        routeList = getIntent().getStringExtra("routeList");
+        routeList = getIntent().getStringExtra("routeList");
 
         siteDbRef = FirebaseDatabase.getInstance().getReference("Historical Sites");
 

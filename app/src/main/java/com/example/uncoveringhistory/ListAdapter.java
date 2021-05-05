@@ -80,7 +80,7 @@ public class ListAdapter extends ArrayAdapter {
         Log.d(TAG, "" + checkBox.isChecked());
 
         checkBox.setOnClickListener(v -> {
-//            DatabaseReference siteDbRef = FirebaseDatabase.getInstance().getReference("Historical Sites");
+            DatabaseReference siteDbRef = FirebaseDatabase.getInstance().getReference("Historical Sites");
 //            siteDbRef.child("checked").setValue(checkBox.isChecked());
             Log.d(TAG, "getView: " + checkBox.isChecked());
         });
