@@ -68,7 +68,6 @@ public class Routes extends AppCompatActivity {
         createRouteButton.setOnClickListener(v -> {
             int selectSites = 0;
             for (int index = 0; index < historicalSiteList.size(); index++) {
-                Log.d(TAG, "" + historicalSiteList.get(index).getChecked());
                 if (historicalSiteList.get(index).getChecked()) {
                     routeList.add(historicalSiteList.get(index).getName());
                     selectSites += 1;

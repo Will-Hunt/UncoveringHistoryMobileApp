@@ -41,6 +41,7 @@ public class ListAdapter extends ArrayAdapter {
 
     private final Activity context;
     StorageReference imageToShow;
+    String description, location;
     List<HistoricalSite> historicalSiteList;
 
     public ListAdapter(Activity context, List<HistoricalSite> historicalSiteList) {
@@ -63,9 +64,10 @@ public class ListAdapter extends ArrayAdapter {
 
         HistoricalSite site = historicalSiteList.get(position);
 
+        String imageName = site.getImageName();
         try {
             File file = File.createTempFile("image", "jpg");
-            String imageFile = "gs://uncovering-history-mobile-app.appspot.com/images/" + site.getImageName();
+            String imageFile = "gs://uncovering-history-mobile-app.appspot.com/images/" + imageName;
             imageToShow = FirebaseStorage.getInstance().getReferenceFromUrl(imageFile);
             imageToShow.getFile(file).addOnSuccessListener(taskSnapshot -> {
                 Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
@@ -74,15 +76,32 @@ public class ListAdapter extends ArrayAdapter {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        checkBox.setChecked(site.getChecked());
+        description = site.getDescription();
         name.setText(site.getName());
         type.setText(site.getType());
-        Log.d(TAG, "" + checkBox.isChecked());
+        location = site.getLocation();
+        checkBox.setChecked(site.getChecked());
 
         checkBox.setOnClickListener(v -> {
             DatabaseReference siteDbRef = FirebaseDatabase.getInstance().getReference("Historical Sites");
-//            siteDbRef.child("checked").setValue(checkBox.isChecked());
-            Log.d(TAG, "getView: " + checkBox.isChecked());
+            siteDbRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        if (Objects.equals(dataSnapshot.child("name").getValue(String.class), name)) {
+                            siteDbRef.child(dataSnapshot.getKey()).child("checked").setValue(checkBox.isChecked());
+                            Log.d(TAG, "onDataChange: " + dataSnapshot.getKey() + " " + dataSnapshot.child("checked").getValue(Boolean.class));
+                            break;
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.d(TAG, "onCancelled: " + error);
+                }
+            });
+            Log.d(TAG, "getView: " + checkBox.isChecked() + site);
         });
         button.setOnClickListener(v -> {
             Intent intent = new Intent(context.getApplicationContext(), SitePage.class);
