@@ -8,48 +8,48 @@
     android:padding="25dp">
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/list_item_checkBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/text_view_image"
+        app:layout_constraintBottom_toBottomOf="@+id/list_item_image"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/text_view_image" />
+        app:layout_constraintTop_toTopOf="@+id/list_item_image" />
 
     <ImageView
-        android:id="@+id/text_view_image"
+        android:id="@+id/list_item_image"
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:layout_alignParentStart="true"
         android:layout_marginStart="8dp"
-        app:layout_constraintStart_toEndOf="@+id/checkBox"
+        app:layout_constraintStart_toEndOf="@+id/list_item_checkBox"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/text_view_name"
+        android:id="@+id/list_item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:textSize="25sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/text_view_image"
-        app:layout_constraintTop_toTopOf="@+id/text_view_image" />
+        app:layout_constraintStart_toEndOf="@+id/list_item_image"
+        app:layout_constraintTop_toTopOf="@+id/list_item_image" />
 
     <TextView
-        android:id="@+id/text_view_type"
+        android:id="@+id/list_item_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/text_view_image"
-        app:layout_constraintStart_toEndOf="@+id/text_view_image" />
+        app:layout_constraintBottom_toBottomOf="@+id/list_item_image"
+        app:layout_constraintStart_toEndOf="@+id/list_item_image" />
 
     <Button
         android:id="@+id/selected_route_site"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="View Site"
-        app:layout_constraintBottom_toBottomOf="@+id/text_view_image"
+        app:layout_constraintBottom_toBottomOf="@+id/list_item_image"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_name" />
+        app:layout_constraintTop_toBottomOf="@+id/list_item_name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

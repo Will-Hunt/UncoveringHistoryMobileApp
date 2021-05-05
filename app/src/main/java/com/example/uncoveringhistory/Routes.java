@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Routes extends AppCompatActivity {
+    private static final String TAG = "UncoveringHistory";
 
     ListView listView;
     List<HistoricalSite> historicalSiteList;
@@ -66,15 +67,19 @@ public class Routes extends AppCompatActivity {
         Button createRouteButton = findViewById(R.id.create_route);
         createRouteButton.setOnClickListener(v -> {
             int selectSites = 0;
-            for (int index = 0; index < historicalSiteList.size(); index++) {
-                    routeList.add(historicalSiteList.get(index).getName());
-                selectSites += 1;
-            }
+//            for (int index = 0; index < historicalSiteList.size(); index++) {
+//                Log.d(TAG, "" + historicalSiteList.get(index).getChecked());
+//                if (historicalSiteList.get(index).getChecked()) {
+//                    routeList.add(historicalSiteList.get(index).getName());
+//                    selectSites += 1;
+//                }
+//            }
             if (selectSites > 1 && routeList != null) {
                 Intent intent = new Intent(getApplicationContext(), Map.class);
                 intent.putExtra("routeList", routeList.toString());
                 startActivity(intent);
-            } else Toast.makeText(Routes.this, "Please select at least 2 Sites First", Toast.LENGTH_LONG).show();
+            } else
+                Toast.makeText(Routes.this, "Please select at least 2 Sites First", Toast.LENGTH_LONG).show();
         });
 
 
