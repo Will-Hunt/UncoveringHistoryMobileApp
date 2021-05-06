@@ -46,4 +46,13 @@
     <string name="about_uncovering_history">About Uncovering History</string>
     <string name="work_in_progress">Work In Progress</string>
     <string name="view_site">View Site</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="uncovering_history">Uncovering History</string>
+    <string name="return_to_login">Return to Login</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="user_name">User Name</string>
+    <string name="confirm_login">Confirm Login</string>
 </resources>

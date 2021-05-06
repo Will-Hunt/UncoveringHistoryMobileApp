@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.UncoveringHistory">
-        <activity android:name=".WorkInProgressPage"></activity>
+        <activity android:name=".user_registration"></activity>
+        <activity android:name=".WorkInProgressPage" />
         <activity android:name=".AboutPage" />
         <activity android:name=".RouteMap" />
         <activity android:name=".SitePage" />
