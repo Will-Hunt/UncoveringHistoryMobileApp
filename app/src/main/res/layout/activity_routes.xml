@@ -10,10 +10,18 @@
         android:id="@+id/historical_site_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/create_route"
+        android:layout_above="@+id/clear_route"
         android:padding="5dp" >
 
     </ListView>
+
+    <Button
+        android:id="@+id/clear_route"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/create_route"
+        android:layout_marginBottom="0dp"
+        android:text="@string/clear_historical_route" />
 
     <Button
         android:id="@+id/create_route"

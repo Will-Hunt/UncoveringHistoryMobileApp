@@ -18,18 +18,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class Routes extends AppCompatActivity {
     private static final String TAG = "UncoveringHistory";
-
     ListView listView;
     List<HistoricalSite> historicalSiteList;
-    List<String> routeList = new ArrayList<>();
+    List<String> routeList;
     DatabaseReference siteDbRef;
 
     @SuppressLint("NonConstantResourceId")
@@ -37,6 +33,13 @@ public class Routes extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routes);
+
+
+        if (getIntent().getStringExtra("addSite") != null) {
+            routeList.add(getIntent().getStringExtra("selectedSite"));
+            Log.d(TAG, "" + getIntent().getStringExtra("addSite"));
+        }
+        Log.d(TAG, "asdf " + routeList);
 
         listView = findViewById(R.id.historical_site_list_view);
         historicalSiteList = new ArrayList<>();
@@ -66,21 +69,16 @@ public class Routes extends AppCompatActivity {
 
         Button createRouteButton = findViewById(R.id.create_route);
         createRouteButton.setOnClickListener(v -> {
-            int selectSites = 0;
-            for (int index = 0; index < historicalSiteList.size(); index++) {
-                if (historicalSiteList.get(index).getChecked()) {
-                    routeList.add(historicalSiteList.get(index).getName());
-                    selectSites += 1;
-                }
-            }
-            if (selectSites > 1 && routeList != null) {
+            Log.d(TAG, "Create Button" + routeList);
+            if (routeList.size() > 1 && routeList != null) {
                 Intent intent = new Intent(getApplicationContext(), Map.class);
                 intent.putExtra("routeList", routeList.toString());
                 startActivity(intent);
             } else
                 Toast.makeText(Routes.this, "Please select at least 2 Sites First", Toast.LENGTH_LONG).show();
         });
-
+        Button clearRouteButton = findViewById(R.id.clear_route);
+        clearRouteButton.setOnClickListener(v -> routeList.clear());
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
