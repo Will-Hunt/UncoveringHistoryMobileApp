@@ -40,11 +40,7 @@ public class user_registration extends AppCompatActivity {
         String passwordVal = passwordValEditText.getText().toString();
 
 
-        if (email.equals(emailVal) || TextUtils.isEmpty(email)) {
-            Toast.makeText(user_registration.this, "Please enter valid email", Toast.LENGTH_SHORT).show();
-        } else if (password.equals(passwordVal) || TextUtils.isEmpty(password)) {
-            Toast.makeText(user_registration.this, "Please enter valid password", Toast.LENGTH_SHORT).show();
-        }else{
+        if (email.equals(emailVal) && password.equals(passwordVal)) {
             FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
@@ -54,6 +50,8 @@ public class user_registration extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Registration failed!!" + " Please try again later", Toast.LENGTH_LONG).show();
                         }
                     });
+        } else {
+            Toast.makeText(user_registration.this, "Please enter valid details.", Toast.LENGTH_SHORT).show();
         }
     }
 }
