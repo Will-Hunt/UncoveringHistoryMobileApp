@@ -45,7 +45,6 @@ public class ListAdapter extends ArrayAdapter {
 
         ImageView image = listItemView.findViewById(R.id.list_item_image);
         TextView name = listItemView.findViewById(R.id.list_item_name);
-        Button addSiteButton = listItemView.findViewById(R.id.add_to_route);
         Button viewSiteButton = listItemView.findViewById(R.id.selected_route_site);
 
         HistoricalSite site = historicalSiteList.get(position);
@@ -66,11 +65,6 @@ public class ListAdapter extends ArrayAdapter {
         name.setText(site.getName());
         location = site.getLocation();
 
-        addSiteButton.setOnClickListener(v -> {
-            Intent intent = new Intent(context.getApplicationContext(), Routes.class);
-            intent.putExtra("addSite", site.getName());
-            context.startActivity(intent);
-        });
         viewSiteButton.setOnClickListener(v -> {
             Intent intent = new Intent(context.getApplicationContext(), SitePage.class);
             intent.putExtra("selectedSite", site.getName());

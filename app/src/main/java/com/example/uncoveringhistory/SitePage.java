@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,6 +63,13 @@ public class SitePage extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(SitePage.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
+        });
+        Button addSiteButton = findViewById(R.id.add_to_route);
+        addSiteButton.setOnClickListener(v -> {
+            Log.d("UncoveringHistory", "SitePage: " + siteName);
+            Intent intent = new Intent(getApplicationContext(), Routes.class);
+            intent.putExtra("addSite", siteName);
+            startActivity(intent);
         });
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);

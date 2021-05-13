@@ -18,28 +18,19 @@
         android:id="@+id/list_item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:textStyle="bold"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintBottom_toTopOf="@+id/selected_route_site"
+        app:layout_constraintEnd_toEndOf="@+id/selected_route_site"
         app:layout_constraintStart_toEndOf="@+id/list_item_image"
         app:layout_constraintTop_toTopOf="@+id/list_item_image" />
 
-    <Button
-        android:id="@+id/add_to_route"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/add_to_route"
-        app:layout_constraintBottom_toBottomOf="@+id/list_item_image"
-        app:layout_constraintEnd_toStartOf="@+id/selected_route_site"
-        app:layout_constraintStart_toEndOf="@+id/list_item_image" />
 
     <Button
         android:id="@+id/selected_route_site"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/view_site"
-        app:layout_constraintBottom_toBottomOf="@+id/add_to_route"
+        app:layout_constraintBottom_toBottomOf="@+id/list_item_image"
         app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

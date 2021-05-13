@@ -25,7 +25,7 @@ public class Routes extends AppCompatActivity {
     private static final String TAG = "UncoveringHistory";
     ListView listView;
     List<HistoricalSite> historicalSiteList;
-    List<String> routeList;
+    List<String> routeList = new ArrayList<>();
     DatabaseReference siteDbRef;
 
     @SuppressLint("NonConstantResourceId")
@@ -34,12 +34,7 @@ public class Routes extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routes);
 
-
-        if (getIntent().getStringExtra("addSite") != null) {
-            routeList.add(getIntent().getStringExtra("selectedSite"));
-            Log.d(TAG, "" + getIntent().getStringExtra("addSite"));
-        }
-        Log.d(TAG, "asdf " + routeList);
+        routeList.add(getIntent().getStringExtra("addSite"));
 
         listView = findViewById(R.id.historical_site_list_view);
         historicalSiteList = new ArrayList<>();
@@ -70,7 +65,7 @@ public class Routes extends AppCompatActivity {
         Button createRouteButton = findViewById(R.id.create_route);
         createRouteButton.setOnClickListener(v -> {
             Log.d(TAG, "Create Button" + routeList);
-            if (routeList.size() > 1 && routeList != null) {
+            if (routeList.size() > 1) {
                 Intent intent = new Intent(getApplicationContext(), Map.class);
                 intent.putExtra("routeList", routeList.toString());
                 startActivity(intent);
