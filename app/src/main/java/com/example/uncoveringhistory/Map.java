@@ -85,10 +85,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback {
                     startActivity(new Intent(getApplicationContext(), Routes.class));
                     overridePendingTransition(0, 0);
                     return true;
-                case R.id.favourites:
-                    startActivity(new Intent(getApplicationContext(), Favourites.class));
-                    overridePendingTransition(0, 0);
-                    return true;
                 case R.id.profile:
                     startActivity(new Intent(getApplicationContext(), Profile.class));
                     overridePendingTransition(0, 0);

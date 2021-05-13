@@ -59,10 +59,6 @@ public class Profile extends AppCompatActivity {
                     startActivity(new Intent(getApplicationContext(), Routes.class));
                     overridePendingTransition(0, 0);
                     return true;
-                case R.id.favourites:
-                    startActivity(new Intent(getApplicationContext(), Favourites.class));
-                    overridePendingTransition(0, 0);
-                    return true;
                 case R.id.profile:
                     return true;
             }
