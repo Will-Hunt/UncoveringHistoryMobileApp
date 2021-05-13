@@ -1,15 +1,14 @@
 package com.example.uncoveringhistory;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -17,11 +16,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +25,7 @@ public class Routes extends AppCompatActivity {
     ListView listView;
     List<HistoricalSite> historicalSiteList;
     String routeList;
+    Boolean favourites = false;
     DatabaseReference siteDbRef;
 
     @SuppressLint("NonConstantResourceId")
@@ -49,14 +44,16 @@ public class Routes extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 historicalSiteList.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    HistoricalSite historicalSite = new HistoricalSite(dataSnapshot.child("name").getValue(String.class),
-                            dataSnapshot.child("description").getValue(String.class),
-                            dataSnapshot.child("type").getValue(String.class),
-                            dataSnapshot.child("location").getValue(String.class),
-                            dataSnapshot.child("imageName").getValue(String.class),
-                            dataSnapshot.child("checked").getValue(Boolean.class)
-                    );
-                    historicalSiteList.add(historicalSite);
+                    if (favourites && !dataSnapshot.child("favourite").getValue(Boolean.class)) {
+                        HistoricalSite historicalSite = new HistoricalSite(dataSnapshot.child("name").getValue(String.class),
+                                dataSnapshot.child("description").getValue(String.class),
+                                dataSnapshot.child("type").getValue(String.class),
+                                dataSnapshot.child("location").getValue(String.class),
+                                dataSnapshot.child("imageName").getValue(String.class),
+                                dataSnapshot.child("checked").getValue(Boolean.class)
+                        );
+                        historicalSiteList.add(historicalSite);
+                    }
                 }
                 listView.setAdapter(new ListAdapter(Routes.this, historicalSiteList, routeList));
             }
@@ -67,11 +64,14 @@ public class Routes extends AppCompatActivity {
             }
         });
 
+        Button favouritesButton = findViewById(R.id.filter_favourites);
+        favouritesButton.setOnClickListener(v -> favourites = !(favourites));
+
         Button createRouteButton = findViewById(R.id.create_route);
         createRouteButton.setOnClickListener(v -> {
             if (routeList.length() > 1) {
                 Intent intent = new Intent(getApplicationContext(), Map.class);
-                intent.putExtra("routeList", routeList.toString());
+                intent.putExtra("routeList", routeList);
                 startActivity(intent);
             } else
                 Toast.makeText(Routes.this, "Please select at least 2 Sites First", Toast.LENGTH_LONG).show();

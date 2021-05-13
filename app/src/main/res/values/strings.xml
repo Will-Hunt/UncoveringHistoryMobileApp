@@ -32,7 +32,8 @@
     <string name="select_historical_type">Select Historical Type</string>
     <string name="selected_marker_button">View Selected Site</string>
     <string name="site_image_des">Site Image</string>
-    <string name="create_historical_route">View Historical Route</string>
+    <string name="create_historical_route">View Route</string>
+    <string name="clear_historical_route">Clear Route</string>
     <string name="start_route">Start Route!</string>
 
     <string name="user_profile_image">User Profile Image</string>
@@ -56,5 +57,5 @@
     <string name="user_name">User Name</string>
     <string name="confirm_email">Confirm Email</string>
     <string name="add_to_route">Add to Route</string>
-    <string name="clear_historical_route">Clear Historical Route</string>
+    <string name="filter_by_favourites">Filter by Favourites</string>
 </resources>

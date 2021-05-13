@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,28 +8,41 @@
 
     <ListView
         android:id="@+id/historical_site_list_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/clear_route"
-        android:padding="5dp" >
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    </ListView>
-
-    <Button
-        android:id="@+id/clear_route"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/create_route"
-        android:layout_marginBottom="0dp"
-        android:text="@string/clear_historical_route" />
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-    <Button
-        android:id="@+id/create_route"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/bottom_navigation"
-        android:layout_marginBottom="0dp"
-        android:text="@string/create_historical_route" />
+        <Button
+            android:id="@+id/clear_route"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/clear_historical_route" />
+
+        <Button
+            android:id="@+id/create_route"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/create_historical_route" />
+
+        <Button
+            android:id="@+id/filter_favourites"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/filter_by_favourites" />
+    </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -39,6 +52,9 @@
         app:itemBackground="@color/color_primary_background"
         app:itemIconTint="@color/color_primary_text"
         app:itemTextColor="@color/color_primary_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/menu_navigation" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
