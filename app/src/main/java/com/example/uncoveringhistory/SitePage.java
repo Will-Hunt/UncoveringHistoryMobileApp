@@ -31,6 +31,8 @@ public class SitePage extends AppCompatActivity {
     HistoricalSite historicalSite;
     StorageReference imageToShow;
     DatabaseReference siteDbRef;
+    String siteName, routeList;
+
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -38,7 +40,9 @@ public class SitePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_site_page);
 
-        String siteName = getIntent().getStringExtra("selectedSite");
+        siteName = getIntent().getStringExtra("selectedSite");
+        routeList = getIntent().getStringExtra("routeList");
+
         siteDbRef = FirebaseDatabase.getInstance().getReference("Historical Sites");
         siteDbRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -63,13 +67,6 @@ public class SitePage extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(SitePage.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
-        });
-        Button addSiteButton = findViewById(R.id.add_to_route);
-        addSiteButton.setOnClickListener(v -> {
-            Log.d("UncoveringHistory", "SitePage: " + siteName);
-            Intent intent = new Intent(getApplicationContext(), Routes.class);
-            intent.putExtra("addSite", siteName);
-            startActivity(intent);
         });
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -124,5 +121,14 @@ public class SitePage extends AppCompatActivity {
 
         TextView siteDes = findViewById(R.id.site_page_description);
         siteDes.setText(historicalSite.getDescription());
+
+        Button addSiteButton = findViewById(R.id.add_to_route);
+        addSiteButton.setOnClickListener(v -> {
+            routeList += historicalSite.getName();
+            Intent intent = new Intent(getApplicationContext(), Routes.class);
+            intent.putExtra("routeList", routeList);
+            startActivity(intent);
+        });
+
     }
 }

@@ -17,6 +17,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +30,7 @@ public class Routes extends AppCompatActivity {
     private static final String TAG = "UncoveringHistory";
     ListView listView;
     List<HistoricalSite> historicalSiteList;
-    List<String> routeList = new ArrayList<>();
+    String routeList;
     DatabaseReference siteDbRef;
 
     @SuppressLint("NonConstantResourceId")
@@ -34,7 +39,7 @@ public class Routes extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routes);
 
-        routeList.add(getIntent().getStringExtra("addSite"));
+        routeList = getIntent().getStringExtra("routeList");
 
         listView = findViewById(R.id.historical_site_list_view);
         historicalSiteList = new ArrayList<>();
@@ -53,7 +58,7 @@ public class Routes extends AppCompatActivity {
                     );
                     historicalSiteList.add(historicalSite);
                 }
-                listView.setAdapter(new ListAdapter(Routes.this, historicalSiteList));
+                listView.setAdapter(new ListAdapter(Routes.this, historicalSiteList, routeList));
             }
 
             @Override
@@ -64,8 +69,7 @@ public class Routes extends AppCompatActivity {
 
         Button createRouteButton = findViewById(R.id.create_route);
         createRouteButton.setOnClickListener(v -> {
-            Log.d(TAG, "Create Button" + routeList);
-            if (routeList.size() > 1) {
+            if (routeList.length() > 1) {
                 Intent intent = new Intent(getApplicationContext(), Map.class);
                 intent.putExtra("routeList", routeList.toString());
                 startActivity(intent);
@@ -73,7 +77,7 @@ public class Routes extends AppCompatActivity {
                 Toast.makeText(Routes.this, "Please select at least 2 Sites First", Toast.LENGTH_LONG).show();
         });
         Button clearRouteButton = findViewById(R.id.clear_route);
-        clearRouteButton.setOnClickListener(v -> routeList.clear());
+        clearRouteButton.setOnClickListener(v -> routeList = "");
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 

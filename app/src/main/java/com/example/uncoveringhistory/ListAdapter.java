@@ -28,13 +28,14 @@ public class ListAdapter extends ArrayAdapter {
 
     private final Activity context;
     StorageReference imageToShow;
-    String description, location;
+    String description, location, routeList;
     List<HistoricalSite> historicalSiteList;
 
-    public ListAdapter(Activity context, List<HistoricalSite> historicalSiteList) {
+    public ListAdapter(Activity context, List<HistoricalSite> historicalSiteList, String routeList) {
         super(context, R.layout.list_item, historicalSiteList);
         this.context = context;
         this.historicalSiteList = historicalSiteList;
+        this.routeList = routeList;
     }
 
     @NonNull
@@ -68,6 +69,7 @@ public class ListAdapter extends ArrayAdapter {
         viewSiteButton.setOnClickListener(v -> {
             Intent intent = new Intent(context.getApplicationContext(), SitePage.class);
             intent.putExtra("selectedSite", site.getName());
+            intent.putExtra("routeList", routeList);
             context.startActivity(intent);
         });
         return listItemView;
