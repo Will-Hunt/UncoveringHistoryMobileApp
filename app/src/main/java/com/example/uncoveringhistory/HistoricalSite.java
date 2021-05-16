@@ -6,15 +6,15 @@ public class HistoricalSite {
     String type;
     String location;
     String imageName;
-    Boolean checked;
+    Boolean favourite;
 
-    public HistoricalSite(String name, String description, String type, String location, String imageName, Boolean checked) {
+    public HistoricalSite(String name, String description, String type, String location, String imageName, Boolean favourite) {
         this.name = name;
         this.description = description;
         this.type = type;
         this.location = location;
         this.imageName = imageName;
-        this.checked = checked;
+        this.favourite = favourite;
     }
 
     public String getName() {
@@ -33,7 +33,7 @@ public class HistoricalSite {
         return imageName;
     }
 
-    public Boolean getChecked() {
-        return checked;
+    public Boolean getFavourite() {
+        return favourite;
     }
 }

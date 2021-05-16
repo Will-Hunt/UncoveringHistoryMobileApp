@@ -54,7 +54,7 @@ public class SitePage extends AppCompatActivity {
                                 dataSnapshot.child("type").getValue(String.class),
                                 dataSnapshot.child("location").getValue(String.class),
                                 dataSnapshot.child("imageName").getValue(String.class),
-                                dataSnapshot.child("checked").getValue(Boolean.class)
+                                dataSnapshot.child("favourite").getValue(Boolean.class)
                         );
                         break;
                     }
@@ -117,6 +117,18 @@ public class SitePage extends AppCompatActivity {
 
         TextView siteDes = findViewById(R.id.site_page_description);
         siteDes.setText(historicalSite.getDescription());
+
+        Button favouriteButton = findViewById(R.id.add_to_favourite);
+        favouriteButton.setOnClickListener(v -> {
+            siteDbRef = FirebaseDatabase.getInstance().getReference("Historical Sites");
+
+            siteDbRef.updateChildren(cust1, new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                    Toast.makeText(MainActivity.this,"Inserted successfully",Toast.LENGTH_LONG).show();
+                }
+            });
+        });
 
         Button addSiteButton = findViewById(R.id.add_to_route);
         addSiteButton.setOnClickListener(v -> {

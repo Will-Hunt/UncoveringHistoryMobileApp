@@ -3,6 +3,7 @@ package com.example.uncoveringhistory;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -25,7 +26,7 @@ public class Routes extends AppCompatActivity {
     ListView listView;
     List<HistoricalSite> historicalSiteList;
     String routeList;
-    Boolean favourites = false;
+    Boolean favouritesFilter = false;
     DatabaseReference siteDbRef;
 
     @SuppressLint("NonConstantResourceId")
@@ -36,36 +37,13 @@ public class Routes extends AppCompatActivity {
 
         routeList = getIntent().getStringExtra("routeList");
 
-        listView = findViewById(R.id.historical_site_list_view);
-        historicalSiteList = new ArrayList<>();
-        siteDbRef = FirebaseDatabase.getInstance().getReference("Historical Sites");
-        siteDbRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                historicalSiteList.clear();
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    if (favourites && !dataSnapshot.child("favourite").getValue(Boolean.class)) {
-                        HistoricalSite historicalSite = new HistoricalSite(dataSnapshot.child("name").getValue(String.class),
-                                dataSnapshot.child("description").getValue(String.class),
-                                dataSnapshot.child("type").getValue(String.class),
-                                dataSnapshot.child("location").getValue(String.class),
-                                dataSnapshot.child("imageName").getValue(String.class),
-                                dataSnapshot.child("checked").getValue(Boolean.class)
-                        );
-                        historicalSiteList.add(historicalSite);
-                    }
-                }
-                listView.setAdapter(new ListAdapter(Routes.this, historicalSiteList, routeList));
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(Routes.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        updateRouteList();
 
         Button favouritesButton = findViewById(R.id.filter_favourites);
-        favouritesButton.setOnClickListener(v -> favourites = !(favourites));
+        favouritesButton.setOnClickListener(v -> {
+            favouritesFilter = !(favouritesFilter);
+            updateRouteList();
+        });
 
         Button createRouteButton = findViewById(R.id.create_route);
         createRouteButton.setOnClickListener(v -> {
@@ -97,6 +75,40 @@ public class Routes extends AppCompatActivity {
                     return true;
             }
             return false;
+        });
+    }
+
+    public void updateRouteList() {
+
+        listView = findViewById(R.id.historical_site_list_view);
+        historicalSiteList = new ArrayList<>();
+
+        siteDbRef = FirebaseDatabase.getInstance().getReference("Historical Sites");
+        siteDbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                historicalSiteList.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    HistoricalSite historicalSite = new HistoricalSite(dataSnapshot.child("name").getValue(String.class),
+                            dataSnapshot.child("description").getValue(String.class),
+                            dataSnapshot.child("type").getValue(String.class),
+                            dataSnapshot.child("location").getValue(String.class),
+                            dataSnapshot.child("imageName").getValue(String.class),
+                            dataSnapshot.child("favourite").getValue(Boolean.class)
+                    );
+                    if (favouritesFilter) {
+                        if (dataSnapshot.child("favourite").getValue(Boolean.class))
+                            historicalSiteList.add(historicalSite);
+                    } else historicalSiteList.add(historicalSite);
+
+                }
+                listView.setAdapter(new ListAdapter(Routes.this, historicalSiteList, routeList));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Routes.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         });
     }
 }
