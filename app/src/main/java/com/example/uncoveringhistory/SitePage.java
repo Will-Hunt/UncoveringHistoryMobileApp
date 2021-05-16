@@ -121,11 +121,21 @@ public class SitePage extends AppCompatActivity {
         Button favouriteButton = findViewById(R.id.add_to_favourite);
         favouriteButton.setOnClickListener(v -> {
             siteDbRef = FirebaseDatabase.getInstance().getReference("Historical Sites");
-
-            siteDbRef.updateChildren(cust1, new DatabaseReference.CompletionListener() {
+            siteDbRef.addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                    Toast.makeText(MainActivity.this,"Inserted successfully",Toast.LENGTH_LONG).show();
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        if (historicalSite.getName() == dataSnapshot.child("name").getValue(String.class)) {
+                            Log.d("UncoveringHistory", "rwadfsg " + dataSnapshot.getKey());
+                            siteDbRef.child(dataSnapshot.getKey()).child("favourite").setValue(!historicalSite.getFavourite());
+                            break;
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(SitePage.this, "Favourites Status Couldn't be updated.", Toast.LENGTH_LONG).show();
                 }
             });
         });
