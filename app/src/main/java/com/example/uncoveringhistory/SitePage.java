@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,14 +39,18 @@ public class SitePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_site_page);
 
+//      Strings that need to be passed between activities are added to the intent
+//      And need to be set to new variables, because activities are volatile
         siteName = getIntent().getStringExtra("selectedSite");
         routeList = getIntent().getStringExtra("routeList");
 
+//      Sets the database reference and then listens for the reference to be received
         siteDbRef = FirebaseDatabase.getInstance().getReference("Historical Sites");
         siteDbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                  Only the site the user selected is required and the For loop needs to broken once found
                     if (Objects.equals(dataSnapshot.child("name").getValue(String.class), siteName)) {
                         historicalSite = new HistoricalSite(dataSnapshot.child("name").getValue(String.class),
                                 dataSnapshot.child("description").getValue(String.class),
@@ -59,6 +62,7 @@ public class SitePage extends AppCompatActivity {
                         break;
                     }
                 }
+//              The showSite function is called to display the Site on the Site Page activity
                 showSite(historicalSite);
 
             }
@@ -69,10 +73,9 @@ public class SitePage extends AppCompatActivity {
             }
         });
 
+//        The following allows users to switch between pages
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-
         bottomNavigationView.setSelectedItemId(R.id.map);
-
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId()) {
                 case R.id.map:
@@ -94,6 +97,7 @@ public class SitePage extends AppCompatActivity {
 
     public void showSite(HistoricalSite historicalSite) {
         try {
+//          A Try Catch is required in case a temporary file cannot be made, as a result of the createTempFile function
             ImageView siteImage = findViewById(R.id.site_page_image);
             File file = File.createTempFile("image", "jpg");
             String image = "gs://uncovering-history-mobile-app.appspot.com/images/" + historicalSite.getImageName();
@@ -106,7 +110,9 @@ public class SitePage extends AppCompatActivity {
             e.printStackTrace();
         }
 
+//      Gets the XML element that needs to be populated
         TextView siteName = findViewById(R.id.site_page_name);
+//      Populates the element
         siteName.setText(historicalSite.getName());
 
         TextView siteType = findViewById(R.id.site_page_type);
@@ -118,14 +124,15 @@ public class SitePage extends AppCompatActivity {
         TextView siteDes = findViewById(R.id.site_page_description);
         siteDes.setText(historicalSite.getDescription());
 
-        Button favouriteButton = findViewById(R.id.add_to_favourite);
-        favouriteButton.setOnClickListener(v -> {
+//      The following waits for the user to click on the Add To Favourites button and a function is called to complete the task
+        findViewById(R.id.add_to_favourite).setOnClickListener(v -> {
+//      Sets the database reference and then listens for the reference to be received
             siteDbRef = FirebaseDatabase.getInstance().getReference("Historical Sites");
             siteDbRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        if (historicalSite.getName() == dataSnapshot.child("name").getValue(String.class)) {
+                        if (historicalSite.getName().equals(dataSnapshot.child("name").getValue(String.class))) {
                             Log.d("UncoveringHistory", "rwadfsg " + dataSnapshot.getKey());
                             siteDbRef.child(dataSnapshot.getKey()).child("favourite").setValue(!historicalSite.getFavourite());
                             break;
@@ -140,9 +147,11 @@ public class SitePage extends AppCompatActivity {
             });
         });
 
-        Button addSiteButton = findViewById(R.id.add_to_route);
-        addSiteButton.setOnClickListener(v -> {
+//      The following waits for the user to click on the Add To Route button and a function is called to complete the task
+        findViewById(R.id.add_to_route).setOnClickListener(v -> {
+//          The Historical Site Name is added to the String of Routes
             routeList += historicalSite.getName();
+//          An Intent is made, the Route List is added and the intent to the Routes is called
             Intent intent = new Intent(getApplicationContext(), Routes.class);
             intent.putExtra("routeList", routeList);
             startActivity(intent);

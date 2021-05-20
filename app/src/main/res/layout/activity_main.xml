@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+<!-- A simple login page from start up allows users to quickly login or register-->
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -91,6 +92,7 @@
         app:layout_constraintBottom_toTopOf="@+id/register_button"
         tools:layout_editor_absoluteX="32dp" />
 
+<!-- There is also space to add additional login methods such as Facebook or Twitter -->
     <Button
         android:id="@+id/register_button"
         android:layout_width="0dp"

@@ -6,6 +6,7 @@
     android:orientation="horizontal"
     android:padding="25dp">
 
+    <!-- This list item is populated by individual sites and used by the ListView in the Routes activity -->
     <ImageView
         android:id="@+id/list_item_image"
         android:layout_width="75dp"

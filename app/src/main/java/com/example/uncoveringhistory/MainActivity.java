@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,10 +19,6 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
@@ -34,15 +29,13 @@ public class MainActivity extends AppCompatActivity {
     AuthCredential authCredential;
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
-    DatabaseReference siteDbRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // Call Map straight away
-        // startActivity(new Intent(this, Map.class));
 
+//      Sets the database reference and then listens for the reference to be received
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null) { //If a user is signed in
@@ -63,15 +56,14 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, 100); //Start Activity for Result
         });
 
-        findViewById(R.id.login_button).setOnClickListener(view -> {
-            login();
-        });
+        findViewById(R.id.login_button).setOnClickListener(view -> login());
 
         findViewById(R.id.register_button).setOnClickListener(view -> startActivity(new Intent(MainActivity.this, user_registration.class)));
 
     }
 
     private void firebaseAuthentication(AuthCredential authCredential) {
+//          signInWithCredential is a built-in function to ensure the user is correctly signed in
         firebaseAuth.signInWithCredential(authCredential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) { //If the Authentication was successful call the Profile Class
@@ -106,11 +98,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void login() {
+//      Now the user wants to register each of the inputs need to be set to variables
         EditText emailEditText = findViewById(R.id.login_EmailAddress);
         String email = emailEditText.getText().toString();
         EditText passwordEditText = findViewById(R.id.login_Password);
         String password = passwordEditText.getText().toString();
 
+//      Validates inputs and then attempts sign in
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(MainActivity.this, "Please enter valid email", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(password)) {

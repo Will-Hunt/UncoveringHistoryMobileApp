@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".WorkInProgressPage">
 
+    <!-- This page provides clarity that there are future developments for the prototype -->
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"

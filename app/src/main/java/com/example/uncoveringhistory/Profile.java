@@ -1,21 +1,17 @@
 package com.example.uncoveringhistory;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class Profile extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
@@ -27,6 +23,7 @@ public class Profile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+//      The following waits for the user to click on the respective button and a function is called to complete the task
         findViewById(R.id.profile_about_button).setOnClickListener(view -> startActivity(new Intent(Profile.this, AboutPage.class)));
         findViewById(R.id.profile_notifications_button).setOnClickListener(view -> startActivity(new Intent(Profile.this, WorkInProgressPage.class)));
         findViewById(R.id.profile_account_button).setOnClickListener(view -> startActivity(new Intent(Profile.this, WorkInProgressPage.class)));
@@ -34,8 +31,8 @@ public class Profile extends AppCompatActivity {
         findViewById(R.id.profile_help_button).setOnClickListener(view -> startActivity(new Intent(Profile.this, WorkInProgressPage.class)));
         findViewById(R.id.add_new_site).setOnClickListener(view -> startActivity(new Intent(Profile.this, CreateNewSite.class)));
 
+//      Users can click the Log Out button to sign out of the app
         firebaseAuth = FirebaseAuth.getInstance();
-
         googleSignInClient = GoogleSignIn.getClient(Profile.this, GoogleSignInOptions.DEFAULT_SIGN_IN);
         findViewById(R.id.logout_btn).setOnClickListener(view -> googleSignInClient.signOut().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -45,10 +42,9 @@ public class Profile extends AppCompatActivity {
             }
         }));
 
+//      The following allows users to switch between pages
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-
         bottomNavigationView.setSelectedItemId(R.id.profile);
-
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId()) {
                 case R.id.map:

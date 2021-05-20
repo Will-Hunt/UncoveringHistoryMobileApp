@@ -1,29 +1,22 @@
 <resources>
+    <!--  Menu Names  -->
     <string name="app_name">Uncovering History</string>
     <string name="map_name">Map</string>
     <string name="route_name">Route</string>
-    <string name="favourites_name">Favourites</string>
     <string name="profile_name">Profile</string>
 
+    <!-- Google Maps API Key -->
     <string name="google_maps_key">AIzaSyCYUkVd46jDLq4pk6E6KDeiSYfFgMMlne4</string>
 
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_app_id">949336838939681</string>
     <string name="fb_login_protocol_scheme">fb949336838939681</string>
     <string name="title_activity_new_site_form">NewSiteForm</string>
-    <!--
-    This string is used for square devices and overridden by hello_world in
-    values-round/strings.xml for round devices.
-    -->
 
-    <!-- Twitter consumer key and secret -->
-    <!--    <string name="twitter_consumer_key" translatable="false">YOUR_CONSUMER_KEY</string>-->
-    <!--    <string name="twitter_consumer_secret" translatable="false">YOUR_CONSUMER_SECRET</string>-->
-
+    <!-- Strings used throughout all pages -->
     <string name="historical_site_name">Historical Site Name</string>
     <string name="historical_site_description">Historical Site Description</string>
     <string name="historical_site_location">Historical Site Location</string>
-
     <string name="site_profile_picture">Site Profile Picture</string>
     <string name="upload_site">Upload Site!</string>
     <string name="site_image">Site Image</string>
@@ -35,7 +28,6 @@
     <string name="create_historical_route">View Route</string>
     <string name="clear_historical_route">Clear Route</string>
     <string name="start_route">Start Route!</string>
-
     <string name="user_profile_image">User Profile Image</string>
     <string name="about">About</string>
     <string name="notifications_settings">Notifications Settings</string>

@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +42,7 @@ public class ListAdapter extends ArrayAdapter {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
         @SuppressLint({"InflateParams", "ViewHolder"}) View listItemView = inflater.inflate(R.layout.list_item, null, true);
+//      Gets the XML element that needs to be populated
 
         ImageView image = listItemView.findViewById(R.id.list_item_image);
         TextView name = listItemView.findViewById(R.id.list_item_name);
@@ -50,6 +50,7 @@ public class ListAdapter extends ArrayAdapter {
 
         HistoricalSite site = historicalSiteList.get(position);
 
+//          A Try Catch is required in case a temporary file cannot be made, as a result of the createTempFile function
         String imageName = site.getImageName();
         try {
             File file = File.createTempFile("image", "jpg");
@@ -62,11 +63,14 @@ public class ListAdapter extends ArrayAdapter {
         } catch (IOException e) {
             e.printStackTrace();
         }
+//      Populates the element
         description = site.getDescription();
         name.setText(site.getName());
         location = site.getLocation();
 
+//      The following waits for the user to click on the Add To Route button and a function is called to complete the task
         viewSiteButton.setOnClickListener(v -> {
+//          An Intent is made, the Route List is added and the intent to the Routes is called
             Intent intent = new Intent(context.getApplicationContext(), SitePage.class);
             intent.putExtra("selectedSite", site.getName());
             intent.putExtra("routeList", routeList);

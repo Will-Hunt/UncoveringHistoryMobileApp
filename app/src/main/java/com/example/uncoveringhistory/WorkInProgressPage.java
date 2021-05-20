@@ -16,6 +16,7 @@ public class WorkInProgressPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_in_progress_page);
 
+//        The following allows users to switch between pages
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {

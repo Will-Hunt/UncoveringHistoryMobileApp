@@ -6,6 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".user_registration">
 
+    <!-- Basic authentication only requires the email and password -->
+    <!-- Validation is included as a security measure -->
+    <!-- Using the Input Type allows for input validation -->
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -97,6 +100,7 @@
         app:layout_constraintBottom_toTopOf="@+id/return_to_login_button"
         tools:layout_editor_absoluteX="32dp" />
 
+    <!-- In case a user clicks the wrong button, they are able to return to the previous page -->
     <Button
         android:id="@+id/return_to_login_button"
         android:layout_width="0dp"

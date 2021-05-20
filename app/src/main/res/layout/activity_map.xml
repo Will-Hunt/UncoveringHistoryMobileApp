@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".Map">
 
+    <!-- The map fragment is loaded using the Google Maps API -->
+    <!-- The fragment can be easily updated using the ID-->
     <fragment
         android:id="@+id/map"
         class="com.google.android.gms.maps.SupportMapFragment"
@@ -25,20 +27,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <!-- Bottom Navigation bar, allowing users to move between activities -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:itemBackground="@color/color_primary_background"
+        app:itemBackground="@color/color_secondary_background"
         app:itemIconTint="@color/color_primary_text"
         app:itemTextColor="@color/color_primary_text"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/menu_navigation" />
-
-
-
-
+        app:menu="@menu/menu_navigation"></com.google.android.material.bottomnavigation.BottomNavigationView>
 </androidx.constraintlayout.widget.ConstraintLayout>

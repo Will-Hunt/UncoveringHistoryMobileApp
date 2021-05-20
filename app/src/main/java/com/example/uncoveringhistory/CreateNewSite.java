@@ -46,6 +46,7 @@ public class CreateNewSite extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_site);
 
+//      Gets the XML element that needs to be populated and populates
         siteType = findViewById(R.id.historical_site_type);
         historicalTypes.add("Select Historical Type");
         historicalTypes.add("Medieval");
@@ -56,6 +57,7 @@ public class CreateNewSite extends AppCompatActivity {
         siteType.setAdapter(dataAdapter);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
+//      Sets the Historical Site that was selected
         siteType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -68,6 +70,7 @@ public class CreateNewSite extends AppCompatActivity {
             }
         });
 
+//      Image input is registered and a intent is called to upload the image
         selectImg = findViewById(R.id.historical_site_selectImg);
         selectImg.setOnClickListener(v -> {
             Intent intent = new Intent();
@@ -76,6 +79,7 @@ public class CreateNewSite extends AppCompatActivity {
             startActivityForResult(intent, PICK_IMAGE_REQUEST);
         });
 
+//      The following waits for the user to click on the Submit button and a function is called to complete the task
         submitBtn = findViewById(R.id.submit_historical_site);
         submitBtn.setOnClickListener(v -> uploadSite());
     }
@@ -115,7 +119,9 @@ public class CreateNewSite extends AppCompatActivity {
     }
 
     private void uploadSite() {
+//      Sets the database reference and then listens for the reference to be received
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Historical Sites");
+//      Inputs need to be set to variables
         siteName = findViewById(R.id.historical_site_name);
         siteDescription = findViewById(R.id.historical_site_description);
         siteLoc = findViewById(R.id.historical_site_location);
@@ -126,9 +132,13 @@ public class CreateNewSite extends AppCompatActivity {
         imageName = UUID.randomUUID().toString();
         uploadImage();
 
+//      The Historical Site variable is set
         HistoricalSite site = new HistoricalSite(name, description, historicalTypeSelected, location, imageName, false);
+//      The new variable is pushed to the database
         databaseReference.push().setValue(site);
+//      Message is given to confirm the site was successful
         Toast.makeText(getApplicationContext(), "Site Upload Successful", Toast.LENGTH_LONG).show();
+//      The user is taken to the previous page, so the user doesn't accidentally input twice
         startActivity(new Intent(CreateNewSite.this, Profile.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
 }

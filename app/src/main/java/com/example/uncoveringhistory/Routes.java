@@ -3,8 +3,6 @@ package com.example.uncoveringhistory;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -22,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Routes extends AppCompatActivity {
-    private static final String TAG = "UncoveringHistory";
     ListView listView;
     List<HistoricalSite> historicalSiteList;
     String routeList;
@@ -35,18 +32,21 @@ public class Routes extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routes);
 
+//      Strings that need to be passed between activities are added to the intent
+//      And need to be set to new variables, because activities are volatile
         routeList = getIntent().getStringExtra("routeList");
 
+//      Main function for displaying the routes is called, this function is separate to improve readability
         updateRouteList();
 
-        Button favouritesButton = findViewById(R.id.filter_favourites);
-        favouritesButton.setOnClickListener(v -> {
+//      The following waits for the user to click on the Filter Favourites button and a function is called to complete the task
+        findViewById(R.id.filter_favourites).setOnClickListener(v -> {
             favouritesFilter = !(favouritesFilter);
             updateRouteList();
         });
 
-        Button createRouteButton = findViewById(R.id.create_route);
-        createRouteButton.setOnClickListener(v -> {
+//      The following waits for the user to click on the Create Route button and a function is called to complete the task
+        findViewById(R.id.create_route).setOnClickListener(v -> {
             if (routeList.length() > 1) {
                 Intent intent = new Intent(getApplicationContext(), Map.class);
                 intent.putExtra("routeList", routeList);
@@ -54,13 +54,13 @@ public class Routes extends AppCompatActivity {
             } else
                 Toast.makeText(Routes.this, "Please select at least 2 Sites First", Toast.LENGTH_LONG).show();
         });
-        Button clearRouteButton = findViewById(R.id.clear_route);
-        clearRouteButton.setOnClickListener(v -> routeList = "");
 
+//      The following waits for the user to click on the Clear Route button and a function is called to complete the task
+        findViewById(R.id.clear_route).setOnClickListener(v -> routeList = "");
+
+//        The following allows users to switch between pages
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-
         bottomNavigationView.setSelectedItemId(R.id.routes);
-
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId()) {
                 case R.id.map:
@@ -80,9 +80,11 @@ public class Routes extends AppCompatActivity {
 
     public void updateRouteList() {
 
+        //      Gets the XML element that needs to be populated
         listView = findViewById(R.id.historical_site_list_view);
         historicalSiteList = new ArrayList<>();
 
+//      Sets the database reference and then listens for the reference to be received
         siteDbRef = FirebaseDatabase.getInstance().getReference("Historical Sites");
         siteDbRef.addValueEventListener(new ValueEventListener() {
             @Override
